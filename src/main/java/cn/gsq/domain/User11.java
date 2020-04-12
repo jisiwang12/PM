@@ -4,7 +4,7 @@ package cn.gsq.domain;
  * 用户登录
  * @author mechrevo
  */
-public class User {
+public class User11 {
     private String uId;
     private String uName;
     private String uPass;

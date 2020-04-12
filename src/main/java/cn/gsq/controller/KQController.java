@@ -3,6 +3,7 @@ package cn.gsq.controller;
 import cn.gsq.domain.KQ;
 import cn.gsq.service.IKQService;
 import cn.gsq.service.impl.KQServiceImpl;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +30,21 @@ public class KQController {
      * @return
      */
     @RequestMapping("/findAll")
-    public ModelAndView findAll() {
-        List<KQ> all = kqService.findAll();
+    public ModelAndView findAll(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                @RequestParam(name = "pageSize", required = true, defaultValue = "2") int pageSize) {
+        List<KQ> all = kqService.findAll(page, pageSize);
+        //分页
+        PageInfo pageInfo = new PageInfo(all);
         ModelAndView modelAndView = new ModelAndView();
         System.out.println(all);
         modelAndView.setViewName("orders-list");
-        modelAndView.addObject("allList", all);
+        modelAndView.addObject("pageInfo", pageInfo);
         return modelAndView;
     }
 
     /**
      * 通过成绩ID查询
+     *
      * @param id
      * @return
      */
@@ -55,21 +60,18 @@ public class KQController {
 
     /**
      * 修改考勤数据
+     *
      * @param id
      * @param cd
      * @param kk
      * @return
      */
     @RequestMapping("/save")
-    public ModelAndView save(@RequestParam(name = "id") String id,
-                     @RequestParam(name = "cd") String cd,
-                     @RequestParam(name = "kk") String kk) {
+    public String save(@RequestParam(name = "id") String id,
+                             @RequestParam(name = "cd") String cd,
+                             @RequestParam(name = "kk") String kk)
+                              {
         kqService.save(id, cd, kk);
-        ModelAndView modelAndView = new ModelAndView();
-        List<KQ> all = kqService.findAll();
-        modelAndView.setViewName("orders-list");
-        modelAndView.addObject("allList", all);
-        return modelAndView;
-
+        return "redirect:findAll";
     }
 }

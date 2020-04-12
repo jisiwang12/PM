@@ -230,7 +230,7 @@
 								<tbody>
 
 
-									<c:forEach items="${allList}" var="all">
+									<c:forEach items="${pageInfo.list}" var="all">
 
 										<tr>
 											<td><input name="ids" type="checkbox"></td>
@@ -292,21 +292,21 @@
                         <ul class="pagination">
 							
                             <li>
-                                <a href="${pageContext.request.contextPath}/orders/findAll?page=${pageInfo.firstPage}&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a>
+                                <a href="${pageContext.request.contextPath}/kq/findAll?page=${pageInfo.firstPage}&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a>
                             </li>
-                            <li><a href="${pageContext.request.contextPath}/orders/findAll?page=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/kq/findAll?page=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>
 							<c:forEach begin="1" end="${pageInfo.pages}" varStatus="status"  >
 								<c:if test="${pageInfo.pageNum==status.count}">
-									<li ><a style="background-color: #8ca4ff" href="${pageContext.request.contextPath}/orders/findAll?page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>
+									<li ><a style="background-color: #8ca4ff" href="${pageContext.request.contextPath}/kq/findAll">${status.count}</a></li>
 
 								</c:if>
 								<c:if test="${pageInfo.pageNum!=status.count}">
-								<li class="lis"><a href="${pageContext.request.contextPath}/orders/findAll?page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>
+								<li class="lis"><a href="${pageContext.request.contextPath}/kq/findAll?page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>
 								</c:if>
 							</c:forEach>
-                            <li><a href="${pageContext.request.contextPath}/orders/findAll?page=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/kq/findAll?page=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>
                             <li>
-                                <a href="${pageContext.request.contextPath}/orders/findAll?page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>
+                                <a href="${pageContext.request.contextPath}/kq/findAll?page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>
                             </li>
                         </ul>
                     </div>
@@ -422,7 +422,7 @@
 			var pageSize = $("#changePageSize").val();
 
 			//向服务器发送请求，改变没页显示条数
-			location.href = "${pageContext.request.contextPath}/orders/findAll?page=1&pageSize="
+			location.href = "${pageContext.request.contextPath}/kq/findAll?page=1&pageSize="
 					+ pageSize;
 
 		}

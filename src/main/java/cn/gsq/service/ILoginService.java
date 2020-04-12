@@ -1,7 +1,7 @@
 package cn.gsq.service;
 
-import cn.gsq.domain.User;
+import cn.gsq.domain.User11;
 
 public interface ILoginService {
-    User findUserByUname(String uName);
+    User11 findUserByUname(String uName);
 }

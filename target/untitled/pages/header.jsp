@@ -5,7 +5,7 @@
 <!-- 页面头部 -->
 <header class="main-header">
 	<!-- Logo -->
-	<a href="all-admin-index.html" class="logo">
+	<a href="${pageContext.request.contextPath}/pages/main.jsp" class="logo">
 		<span class="logo-mini"><b>学生</b></span>
 		<span class="logo-lg">课程成绩管理</span>
 	</a>
@@ -37,7 +37,7 @@
 								<a href="#" class="btn btn-default btn-flat">修改密码</a>
 							</div>
 							<div class="pull-right">
-								<a href="${pageContext.request.contextPath}/logout.do"
+								<a href="${pageContext.request.contextPath}/logout"
 									class="btn btn-default btn-flat">注销</a>
 							</div>
 						</li>

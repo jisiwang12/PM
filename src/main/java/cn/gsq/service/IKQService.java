@@ -10,7 +10,7 @@ import java.util.List;
  * @author mechrevo
  */
 public interface IKQService {
-    public List<KQ> findAll();
+    public List<KQ> findAll(int page,int pageSize);
 
     KQ findById(String id);
 
