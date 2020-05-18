@@ -21,7 +21,7 @@
 					class="dropdown-toggle" data-toggle="dropdown"> <img
 						src="${pageContext.request.contextPath}/img/F.png"
 						class="user-image" alt="User Image"> <span class="hidden-xs">
-							<security:authentication property="principal.username"/>
+							<security:authentication property="principal.username" var="name"/>
 					</span>
 
 				</a>
@@ -34,7 +34,7 @@
 						<!-- Menu Footer-->
 						<li class="user-footer">
 							<div class="pull-left">
-								<a href="#" class="btn btn-default btn-flat">修改密码</a>
+								<a href="${pageContext.request.contextPath}/pages/changepassword.jsp" class="btn btn-default btn-flat">修改密码</a>
 							</div>
 							<div class="pull-right">
 								<a href="${pageContext.request.contextPath}/logout"

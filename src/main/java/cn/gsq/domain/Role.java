@@ -1,17 +1,9 @@
 package cn.gsq.domain;
 
 public class Role {
-    public String roleName;
+    public String role_Name;
     private int role_id;
-    private int uid;
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
 
     public int getRole_id() {
         return role_id;
@@ -21,11 +13,11 @@ public class Role {
         this.role_id = role_id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getRole_Name() {
+        return role_Name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRole_Name(String roleName) {
+        this.role_Name = roleName;
     }
 }

@@ -2,6 +2,7 @@ package cn.gsq.controller;
 
 import cn.gsq.domain.UserInfo;
 import cn.gsq.service.IUserService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +20,12 @@ public class UserController {
 
     @RequestMapping("/findAll")
     @RolesAllowed("ADMIN")
-    public ModelAndView findAll() {
+    public ModelAndView findAll(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                @RequestParam(name = "pageSize", required = true, defaultValue = "2") int pageSize) {
         ModelAndView mv = new ModelAndView();
-        List<UserInfo> users = userService.findAll();
-        mv.addObject("userList", users);
+        List<UserInfo> users = userService.findAll(page, pageSize);
+        PageInfo pageInfo = new PageInfo(users);
+        mv.addObject("pageInfo", pageInfo);
         mv.setViewName("user-list");
         return mv;
     }
@@ -42,4 +45,34 @@ public class UserController {
         return modelAndView;
     }
 
-}
+    @RequestMapping("/del")
+    public String del(String[] ids) {
+        if (ids != null && ids.length != 0) {
+            for (String id : ids) {
+                userService.del(id);
+            }
+        }
+        return "redirect:findAll";
+    }
+
+    @RequestMapping("/update")
+    public String update(UserInfo userInfo) {
+        userService.update(userInfo);
+        return "redirect:findAll";
+    }
+
+    @RequestMapping("/changePW")
+    public ModelAndView changePW(String uname,String old,String newpw) throws Exception {
+        ModelAndView mv = new ModelAndView();
+        boolean changestatus=userService.changePW(uname, old, newpw);
+        String pwStatus = null;
+        if (changestatus) {
+             pwStatus = "1";
+        } else {
+            pwStatus = "0";
+        }
+        mv.addObject("pwStatus", pwStatus);
+        mv.setViewName("changepassword");
+        return mv;
+    }
+ }

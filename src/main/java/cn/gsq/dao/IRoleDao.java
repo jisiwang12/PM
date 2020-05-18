@@ -2,24 +2,33 @@ package cn.gsq.dao;
 
 import cn.gsq.domain.Role;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface IRoleDao {
     /**
      * 通过userId查询role表
-     * @param id
+     * @param
      * @return
      */
-    @Select("select * from role where role_id in(select role_id from role where uid=#{id})")
+/*    @Select("select * from role where role_id in(select role_id from role where uid=#{id})")
     @Results({
             @Result(id=true,column="role_id",property="role_id"),
             @Result(column="role_name",property="roleName"),
     })
-    public List<Role> findRoleByUserId(String id);
+    public List<Role> findRoleByUserId(String id);*/
 
     @Select("select * from ROLE")
     List<Role> findAll();
+
+    /**
+     * 通过角色id查询角色
+     * @param id
+     * @return
+     */
+    @Select("select * from role where role_id=#{id}")
+    public List<Role> findRoleById(String id);
 
    /* @Insert("insert into ROLE (rolename, roledesc) VALUES (#{roleName},#{roleDesc})")
     void save(Role role);

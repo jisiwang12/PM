@@ -14,5 +14,11 @@ public interface IKQService {
 
     KQ findById(String id);
 
-    void save(String id, String cd, String kk);
+    void update(String id, String cd, String kk);
+
+    void save(String sno, String cd, String kk, String kqscore, String cono);
+
+    List<KQ> findBySno(String sno);
+
+    List<KQ> findByTime(String time, String sno);
 }

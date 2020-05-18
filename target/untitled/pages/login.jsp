@@ -29,7 +29,7 @@
 	<div class="login-box">
 		<div class="login-logo">
 			<a href="all-admin-index.html"><a>学生成绩管理系统</a>
-		</div>
+
 		<!-- /.login-logo -->
 		<div class="login-box-body">
 			<p class="login-box-msg">登录系统</p>

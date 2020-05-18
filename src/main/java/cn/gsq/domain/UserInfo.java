@@ -12,6 +12,20 @@ public class UserInfo {
     private String uPass;
     private List<Role> roles;
     public int status;
+    public String statusStr;
+
+    public String getStatusStr() {
+        if (this.getStatus() == 0) {
+            this.statusStr = "关闭";
+        }else {
+            this.statusStr = "开启";
+        }
+        return statusStr;
+    }
+
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
+    }
 
     public String getId() {
         return id;

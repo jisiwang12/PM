@@ -12,9 +12,12 @@
 					class="img-circle" alt="User Image">
 			</div>
 			<div class="pull-left info">
-				<p href="#">${user.uName}</p>
-				<security:authentication property="principal.username"></security:authentication>
+				<p></p>
+				<security:authentication property="principal.username" var="name"></security:authentication>
+				<p>${name}</p>
 				<a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+
+
 			</div>
 
 
@@ -29,8 +32,32 @@
 				href="${pageContext.request.contextPath}/pages/main.jsp"><i
 					class="fa fa-dashboard"></i> <span>首页</span></a></li>
 
-
+<%--学生用户--%>
+			<security:authorize access="hasRole('ROLE_STUDENT')">
+				<li class="treeview"><a href="${pageContext.request.contextPath}/student/findBySno?sno=${name}"> <i class="fa fa-user"></i>
+					<span>个人信息维护</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
+				</span>
+				</a>
+				</li>
+				<li class="treeview"><a href="${pageContext.request.contextPath}/kq/findBySno?sno=${name}"> <i class="fa fa-search"></i>
+					<span>查看考勤成绩</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
+				</span>
+				</a>
+				</li>
+				<li class="treeview"><a href="${pageContext.request.contextPath}/work/findBySno?sno=${name}"> <i class="fa fa-cube"></i>
+					<span>查看课程作业成绩</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
+				</span>
+				</a>
+				</li>
+				<li class="treeview"><a href="${pageContext.request.contextPath}/score/findBySno?sno=${name}"> <i class="fa fa-columns"></i>
+					<span>查看课程总成绩</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
+				</span>
+				</a>
+				</li>
+			</security:authorize>
+<%--学生用户 /--%>
 <%--用户管理--%>
+			<security:authorize access="hasRole('ROLE_ADMIN')">
 			<li class="treeview"><a href="#"> <i class="fa fa-user"></i>
 					<span>用户管理</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
 				</span>
@@ -38,20 +65,37 @@
 				<ul class="treeview-menu">
 					<li><a
 						href="${pageContext.request.contextPath}/user/findAll"> <i
-							class="fa fa-circle-o"></i> 用户管理
+							class="fa fa-circle-o"></i> 查看用户列表
+					</a></li>
+				</ul></li>
+			</security:authorize>
+			<%--信息维护--%>
+			<li class="treeview"><a href="#"> <i class="fa fa-cube"></i>
+				<span>信息维护</span> <span class="pull-right-container"> <i
+						class="fa fa-angle-left pull-right"></i>
+				</span>
+			</a>
+				<ul class="treeview-menu">
+
+					<li><a
+							href="${pageContext.request.contextPath}/student/findAll">
+						<i class="fa fa-circle-o"></i> 学生信息维护
 					</a></li>
 					<li><a
-						href="${pageContext.request.contextPath}/role/findAll"> <i
-							class="fa fa-circle-o"></i> 角色管理
+							href="${pageContext.request.contextPath}/teacher/findAll?page=1&pageSize=2"> <i
+							class="fa fa-circle-o"></i> 任课教师信息维护
 					</a></li>
+
 					<li><a
-						href="${pageContext.request.contextPath}/permission/findAll">
-							<i class="fa fa-circle-o"></i> 资源权限管理
+							href="${pageContext.request.contextPath}/yxms/findAll?page=1&pageSize=2"> <i
+							class="fa fa-circle-o"></i> 教学秘书信息维护
 					</a></li>
+
 					<li><a
-						href="${pageContext.request.contextPath}/sysLog/findAll"> <i
-							class="fa fa-circle-o"></i> 访问日志
+							href="${pageContext.request.contextPath}/yxzr/findAll?page=1&pageSize=2"> <i
+							class="fa fa-circle-o"></i> 系主任信息维护
 					</a></li>
+
 				</ul></li>
 <%--课程作业成绩管理--%>
 			<li class="treeview"><a href="#"> <i class="fa fa-cube"></i>
@@ -62,12 +106,8 @@
 				<ul class="treeview-menu">
 
 					<li><a
-						href="${pageContext.request.contextPath}/product/findAll">
-							<i class="fa fa-circle-o"></i> 产品管理
-					</a></li>
-					<li><a
-						href="${pageContext.request.contextPath}/orders/findAll?page=1&pageSize=3"> <i
-							class="fa fa-circle-o"></i> 订单管理
+						href="${pageContext.request.contextPath}/work/findAll">
+							<i class="fa fa-circle-o"></i> 成绩管理
 					</a></li>
 
 				</ul></li>
@@ -93,12 +133,8 @@
 				<ul class="treeview-menu">
 
 					<li><a
-							href="${pageContext.request.contextPath}/product/findAll">
-						<i class="fa fa-circle-o"></i> 产品管理
-					</a></li>
-					<li><a
-							href="${pageContext.request.contextPath}/orders/findAll?page=1&pageSize=3"> <i
-							class="fa fa-circle-o"></i> 订单管理
+							href="${pageContext.request.contextPath}/score/findAll">
+						<i class="fa fa-circle-o"></i> 成绩管理
 					</a></li>
 
 				</ul></li>
@@ -110,14 +146,9 @@
 				</span>
 			</a>
 				<ul class="treeview-menu">
-
 					<li><a
-							href="${pageContext.request.contextPath}/product/findAll">
-						<i class="fa fa-circle-o"></i> 产品管理
-					</a></li>
-					<li><a
-							href="${pageContext.request.contextPath}/orders/findAll?page=1&pageSize=3"> <i
-							class="fa fa-circle-o"></i> 订单管理
+							href="${pageContext.request.contextPath}/cj/findAll">
+						<i class="fa fa-circle-o"></i> 成绩分析管理
 					</a></li>
 				</ul></li>
 
@@ -128,15 +159,11 @@
 				</span>
 			</a>
 				<ul class="treeview-menu">
+					<li><a
+							href="${pageContext.request.contextPath}/sj/findAll">
+						<i class="fa fa-circle-o"></i> 试卷分析管理
+					</a></li>
 
-					<li><a
-							href="${pageContext.request.contextPath}/product/findAll">
-						<i class="fa fa-circle-o"></i> 产品管理
-					</a></li>
-					<li><a
-							href="${pageContext.request.contextPath}/orders/findAll?page=1&pageSize=3"> <i
-							class="fa fa-circle-o"></i> 订单管理
-					</a></li>
 
 				</ul></li>
 

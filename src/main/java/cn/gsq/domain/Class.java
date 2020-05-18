@@ -2,42 +2,52 @@ package cn.gsq.domain;
 
 public class Class {
     //班级编号
-    private String cSNo;
+    private String cid;
     //班级名字
-    private String cName;
-    //所属学院
-    private String cSchool;
+    private String cname;
+    //年级
+    private String grade;
 
-    public String getcSNo() {
-        return cSNo;
+    private String zyid;
+
+    public String getZyid() {
+        return zyid;
     }
 
-    public void setcSNo(String cSNo) {
-        this.cSNo = cSNo;
+    public void setZyid(String zyid) {
+        this.zyid = zyid;
     }
 
-    public String getcName() {
-        return cName;
+    public String getCid() {
+        return cid;
     }
 
-    public void setcName(String cName) {
-        this.cName = cName;
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 
-    public String getcSchool() {
-        return cSchool;
+    public String getCname() {
+        return cname;
     }
 
-    public void setcSchool(String cSchool) {
-        this.cSchool = cSchool;
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
     @Override
     public String toString() {
         return "Class{" +
-                "cSNo='" + cSNo + '\'' +
-                ", cName='" + cName + '\'' +
-                ", cSchool='" + cSchool + '\'' +
+                "cid='" + cid + '\'' +
+                ", cname='" + cname + '\'' +
+                ", grade='" + grade + '\'' +
                 '}';
     }
 }

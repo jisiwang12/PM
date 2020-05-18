@@ -4,6 +4,7 @@ import cn.gsq.dao.IUserDao;
 import cn.gsq.domain.Role;
 import cn.gsq.domain.UserInfo;
 import cn.gsq.service.IUserService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -40,16 +41,16 @@ public class UserServiceImpl implements IUserService {
         List<SimpleGrantedAuthority> list = new ArrayList<>();
         for (Role role:roles
         ) {
-            list.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+            list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole_Name()));
         }
 
         return list;
     }
 
     @Override
-    public List<UserInfo> findAll() {
-        List<UserInfo> all = userDao.findAll();
-        return all;
+    public List<UserInfo> findAll(int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        return userDao.findAll();
     }
 
     @Override
@@ -64,6 +65,37 @@ public class UserServiceImpl implements IUserService {
         return byId;
     }
 
+    @Override
+    public void del(String id) {
+        userDao.del(id);
+    }
+
+    @Override
+    public void update(UserInfo userInfo) {
+        userInfo.setuPass(bCryptPasswordEncoder.encode(userInfo.getuPass()));
+        userDao.update(userInfo);
+    }
+
+    /**
+     * 用户更改个人密码
+     * @param uname
+     * @param old
+     * @param newpw
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean changePW(String uname, String old, String newpw) throws Exception {
+        UserInfo userByUsername = userDao.findUserByUsername(uname);
+        String pass = userByUsername.getuPass();
+        boolean matches = bCryptPasswordEncoder.matches(old, pass);
+        if (matches) {
+            String encode = bCryptPasswordEncoder.encode(newpw);
+            userDao.updatePw(uname,encode);
+            return true;
+        }
+        return false;
+    }
 
 
 }
