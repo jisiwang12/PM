@@ -1,0 +1,1 @@
+INSERT INTO blog.yz (id, name, age, sex, yx_id, phone) VALUES (1000000, '邹 浩轩', '46', '男', 1, '6054-11830979');

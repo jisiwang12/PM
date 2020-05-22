@@ -1,0 +1,2 @@
+INSERT INTO blog.yxms (id, name, age, sex, yx, phone) VALUES (10000, '史安民', 44, '男', 1, '12323424');
+INSERT INTO blog.yxms (id, name, age, sex, yx, phone) VALUES (10001, '王晓明', 35, '男', 1, '12435353');

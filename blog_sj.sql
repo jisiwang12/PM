@@ -1,0 +1,1 @@
+INSERT INTO blog.sj (id, sjcono, max, min, maxlv, minlv) VALUES (1, '1', '10', '8', '85', '10');

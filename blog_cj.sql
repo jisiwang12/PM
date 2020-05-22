@@ -1,0 +1,1 @@
+INSERT INTO blog.cj (id, cjcono, a, b, c, f, max, min, avg) VALUES (5, '1', '0%', '50%', '75%', '25%', '86', '66', '59');

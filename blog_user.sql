@@ -1,0 +1,12 @@
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (1, 'admin', '$2a$10$FWbpRWDbJ60ipcXeLhzCzuOap9n6dpmMn07mc2w2xYIE7FG2IQiBa', 1, 1);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (2, 'root', '$2a$10$Kgngg4k/FK13Sj9n1TFI8et4GKtS9e0NxEtmb4to9echCIyROcxJW', 1, 1);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (3, 's2016010101', '$2a$10$p.8SiMb8xEn9x.kSlY5Q3u0BiQ.jWzXAypSvc3kHlIxPHVVkMnbtq', 1, 2);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (9, 's2016010105', '$2a$10$XBj3avR8eaIrzZWf4kSzXuNMOQKVymG8hRADlG1uxEy7.F7xMnFXO', 1, 2);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (10, 's201601010202', '$2a$10$HnwT5fMQf8R1TNG2DjyHBeEp0EOixcBKq.FAOkViMB/hx99UsJuBO', 1, 2);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (11, 's201601010203', '$2a$10$mqA3JI1bccPPbAh7g10dEOi4g11WHR9B/4PW0IYaZ9oS1XKTUQwny', 1, 2);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (12, 's201601010204', '$2a$10$a7sh3sT7xKVSAAyYYv/hPOq.QegYc2xZcPsyzg1KNdbnoYrYCqKLW', 1, 2);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (14, 's201601010205', '$2a$10$Y32WHpy4lqOqk9e96w1G2.bIqeyQuBDKnvbywMWsgnGlFXfusnzva', 1, 2);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (18, 'y1000000', '$2a$10$Y32WHpy4lqOqk9e96w1G2.bIqeyQuBDKnvbywMWsgnGlFXfusnzva', 1, 5);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (19, 't1000', '$2a$10$Y32WHpy4lqOqk9e96w1G2.bIqeyQuBDKnvbywMWsgnGlFXfusnzva', 1, 3);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (21, 'x100000', '$2a$10$Y32WHpy4lqOqk9e96w1G2.bIqeyQuBDKnvbywMWsgnGlFXfusnzva', 1, 4);
+INSERT INTO blog.user (id, uname, upass, status, rid) VALUES (22, 's2016010106', '$2a$10$i61M4bjVsgbEgLxfrRpXVecfXt/lV15eygXabEVz8xOyO9wWdT.7a', 1, 2);
