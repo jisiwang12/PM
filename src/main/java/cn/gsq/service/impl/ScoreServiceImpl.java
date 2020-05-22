@@ -18,6 +18,22 @@ public class ScoreServiceImpl implements IScoreService {
     @Autowired
     IScoreDao scoreDao;
 
+
+
+    public List<Score> findByCono(String id) {
+        return scoreDao.findByCono(id);
+
+    }
+
+    public void update(Score score) {
+        Integer kq = score.getKq();
+        Integer work = score.getWork();
+        Integer sj = score.getSj();
+        Integer sscore = (kq * 2+ work * 2 + sj * 6)/10;
+        score.setScore(sscore);
+        scoreDao.update(score);
+    }
+
     /**
      * 学生用户通过学号查询成绩
      * @param sno
@@ -47,5 +63,10 @@ public class ScoreServiceImpl implements IScoreService {
             }
         }
         return scoreList;
+    }
+
+
+    public Score findById(String id) {
+        return scoreDao.findById(id);
     }
 }

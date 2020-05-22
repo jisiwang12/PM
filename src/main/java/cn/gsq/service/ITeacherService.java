@@ -12,9 +12,9 @@ public interface ITeacherService {
 
     Teacher findById(String id);
 
-    void save(String name, String age, String sex, String yxid);
+    void save(String name, String age, String sex, String yxid,String phone);
 
-    public void update(String id, String name, String age, String sex, String yxid);
+    public void update(String id, String name, String age, String sex, String yxid,String phone);
 
     void del(String id);
 }

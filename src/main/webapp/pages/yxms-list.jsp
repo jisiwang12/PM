@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,9 +8,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>学生信息管理</title>
-    <meta name="description" content="AdminLTE2定制版">
-    <meta name="keywords" content="AdminLTE2定制版">
+    <title>个人信息管理</title>
+
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta
@@ -79,15 +78,15 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                教学秘书管理 <small></small>
+                个人信息管理 <small></small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/pages/main.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/student/findAll">教学秘书信息管理</a></li>
+                        href="${pageContext.request.contextPath}/student/findAll">个人信息管理</a></li>
 
-                <li class="active">全部教学秘书</li>
+
             </ol>
         </section>
         <!-- 内容头部 /-->
@@ -105,63 +104,41 @@
                     <div class="table-box">
 
                         <!--工具栏-->
-                        <div class="pull-left">
-                            <div class="form-group form-inline">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/yxms/page'">
-                                        <i class="fa fa-file-o"></i> 新建
-                                    </button><button type="button" id="delete" class="btn btn-default" title="删除">
-                                    <i class="fa fa-file-o"></i> 删除
-                                </button>
 
-                                    <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/student/findAll'">
-                                        <i class="fa fa-refresh"></i> 刷新
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                        </div>
                         <!--工具栏/-->
 
                         <!--数据列表-->
-                        <form action="${pageContext.request.contextPath}/yxms/del" id="form">
+                        <form id="form">
                             <table id="dataList"
                                    class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
                                 <tr>
-                                    <th class="" style="padding-right: 0px"><input
-                                            id="selall" type="checkbox" class="icheckbox_square-blue">
-                                    </th>
-                                    <th class="sorting_asc">ID</th>
-                                    <th class="sorting_desc">姓名</th>
-                                    <th class="sorting">年龄</th>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">姓名</th>
+                                    <th class="text-center">年龄</th>
                                     <th class="text-center">性别</th>
                                     <th class="text-center">联系方式</th>
                                     <th class="text-center">院系</th>
+                                    <th class="text-center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                <c:forEach items="${pageInfo.list}" var="yxms">
-                                    <tr>
-                                        <td><input name="ids" type="checkbox" value="${yxms.id}"></td>
-                                        <td>${yxms.id}</td>
-                                        <td>${yxms.name}</td>
-                                        <td>${yxms.age }</td>
-                                        <td>${yxms.sex}</td>
-                                        <td>${yxms.phone}</td>
-                                        <td>${yxms.yx.yxname}</td>
-                                        <td class="text-center">
-                                            <a href="${pageContext.request.contextPath}/yxms/findById/?id=${yxms.id}" class="btn bg-olive btn-xs">修改</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <tr>
+                                    <td class="text-center">${yxms.id}</td>
+                                    <td class="text-center">${yxms.name}</td>
+                                    <td class="text-center">${yxms.age }</td>
+                                    <td class="text-center">${yxms.sex}</td>
+                                    <td class="text-center">${yxms.phone}</td>
+                                    <td class="text-center">${yxms.yx.yxname}</td>
+                                    <td class="text-center">
+                                        <a href="${pageContext.request.contextPath}/yxms/findById/?id=${yxms.id}"
+                                           class="btn bg-olive btn-xs">修改</a>
+                                        <%--  <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                  data-target="#myModal">
+                                              修改
+                                          </button>--%>
+                                    </td>
+                                </tr>
                                 </tbody>
 
                                 <!--
@@ -183,59 +160,81 @@
 
                 </div>
                 <!-- /.box-body -->
+                <!-- 模态框（Modal） -->
+                <div id="myModal" class="modal modal-primary" role="dialog" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title">标题</h4>
+                            </div>
+                            <div class="modal-body">
 
-                <!-- .box-footer-->
-                <!-- .box-footer-->
-                <div class="box-footer">
-                    <div class="pull-left">
-                        <div class="form-group form-inline">
-                            总共${pageInfo.pages}页，共${pageInfo.total} 条数据。 每页
-                            <select class="form-control" id="changePageSize" onchange="changePageSize()">
-                                <c:forEach begin="1" end="5" varStatus="status">
-                                    <c:if test="${status.count==pageInfo.pageSize}">
-                                        <option selected>${status.count}</option>
 
-                                    </c:if>
-                                    <c:if test="${status.count!=pageInfo.pageSize}">
-                                        <option>${status.count}</option>
-                                    </c:if>
+                                <div class="box-body">
+                                    <div class="form-horizontal">
 
-                                </c:forEach>
-                            </select> 条
+                                        <div class="form-group">
+                                            <label for="inputNumber2" class="col-sm-2 control-label">金额:</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">$</span>
+                                                    <input id="inputNumber2" type="text" class="form-control"
+                                                           placeholder="输入金额整数">
+                                                    <span class="input-group-addon">.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">金额范围:</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="金额">
+                                                    <span class="input-group-addon">-</span>
+                                                    <input type="text" class="form-control" placeholder="金额">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">密码:</label>
+                                            <div class="col-sm-5">
+                                                <input type="password" class="form-control" placeholder="密码" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">选框:</label>
+                                            <div class="col-sm-5">
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" name="c1" checked="checked">
+                                                        选框1</label>
+                                                    <label><input type="checkbox" name="c1"> 选框2</label>
+                                                    <label><input type="checkbox" name="c1"> 选框3</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-outline" data-dismiss="modal">保存</button>
+                            </div>
                         </div>
+                        <!-- /.modal-content -->
                     </div>
 
-                    <div class="box-tools pull-right">
-                        <ul class="pagination">
-
-                            <li>
-                                <a href="${pageContext.request.contextPath}/yxms/findAll?page=${pageInfo.firstPage}&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a>
-                            </li>
-                            <li><a href="${pageContext.request.contextPath}/yxms/findAll?page=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>
-                            <c:forEach begin="1" end="${pageInfo.pages}" varStatus="status"  >
-                                <c:if test="${pageInfo.pageNum==status.count}">
-                                    <li ><a style="background-color: #8ca4ff" href="${pageContext.request.contextPath}/yxms/findAll">${status.count}</a></li>
-
-                                </c:if>
-                                <c:if test="${pageInfo.pageNum!=status.count}">
-                                    <li class="lis"><a href="${pageContext.request.contextPath}/yxms/findAll?page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>
-                                </c:if>
-                            </c:forEach>
-                            <li><a href="${pageContext.request.contextPath}/yxms/findAll?page=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/yxms/findAll?page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>
-                            </li>
-                        </ul>
-                    </div>
-
+                    <!-- /.modal-dialog -->
                 </div>
-                <!-- /.box-footer-->
-
-
-
-            </div>
-            <!-- /.box-footer-->
-
+                <!-- 模态框（Modal） /-->
+                <!-- .box-footer-->
+                <!-- .box-footer-->
 
 
         </section>
@@ -245,15 +244,6 @@
     <!-- @@close -->
     <!-- 内容区域 /-->
 
-    <!-- 底部导航 -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.8
-        </div>
-        <strong>Copyright &copy; 2014-2017 <a
-                href="http://www.itcast.cn">研究院研发部</a>.
-        </strong> All rights reserved. </footer>
-    <!-- 底部导航 /-->
 
 </div>
 
@@ -306,32 +296,17 @@
 <script src="../plugins/ionslider/ion.rangeSlider.min.js"></script>
 <script src="../plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <script>
-    function changePageSize() {
-        //获取下拉框的值
-        var pageSize = $("#changePageSize").val();
 
-        //向服务器发送请求，改变没页显示条数
-        location.href = "${pageContext.request.contextPath}/yxms/findAll?page=1&pageSize="
-            + pageSize;
-
-    }
-    $(document).ready(function() {
+    $(document).ready(function () {
         // 选择框
         $(".select2").select2();
         deleteById();
         // WYSIHTML5编辑器
         $(".textarea").wysihtml5({
-            locale : 'zh-CN'
+            locale: 'zh-CN'
         });
     });
 
-    //删除操作
-    function deleteById() {
-        $("#delete").click(function () {
-            $("#form").submit();
-            console.log("12")
-        });
-    };
     // 设置激活菜单
     function setSidebarActive(tagUri) {
         var liObj = $("#" + tagUri);
@@ -343,7 +318,7 @@
 
     $(document)
         .ready(
-            function() {
+            function () {
 
                 // 激活导航位置
                 setSidebarActive("admin-datalist");
@@ -352,13 +327,13 @@
                 $("#dataList td input[type='checkbox']")
                     .iCheck(
                         {
-                            checkboxClass : 'icheckbox_square-blue',
-                            increaseArea : '20%'
+                            checkboxClass: 'icheckbox_square-blue',
+                            increaseArea: '20%'
                         });
                 // 全选操作
                 $("#selall")
                     .click(
-                        function() {
+                        function () {
                             var clicks = $(this).is(
                                 ':checked');
                             if (!clicks) {

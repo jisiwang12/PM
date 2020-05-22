@@ -84,7 +84,7 @@
 				<li><a href="${pageContext.request.contextPath}/index.jsp"><i
 						class="fa fa-dashboard"></i> 首页</a></li>
 				<li><a
-						href="${pageContext.request.contextPath}/user/findAll.do">用户管理</a></li>
+						href="${pageContext.request.contextPath}/user/findAll">用户管理</a></li>
 				<li class="active">用户表单</li>
 			</ol>
 		</section>
@@ -99,11 +99,34 @@
 					<div class="panel-heading">用户信息</div>
 					<div class="row data-type">
 						<input type="hidden" name="id" value="${user.id}">
+
+						<div class="col-md-2 title">用户名</div>
+						<div class="col-md-4 data">
+							<input type="text" readonly class="form-control" name="uName"
+								    value="${user.uName}">
+						</div>
+
 						<div class="col-md-2 title">密码</div>
 						<div class="col-md-4 data">
 							<input type="password" class="form-control" name="uPass"
 								   placeholder="密码" value="${user.uPass}">
 						</div>
+
+						<div class="col-md-2 title">权限</div>
+						<div class="col-md-4 data">
+							<select class="form-control select2" style="width: 100%"
+									name="rid">
+								<c:forEach items="${roleList}" var="role">
+									<c:if test="${user.roles.get(0).role_id==role.role_id}">
+									<option selected value="${role.role_id}">${role.role_Name}</option>
+									</c:if>
+									<c:if test="${user.roles.get(0).role_id!=role.role_id}">
+										<option value="${role.role_id}">${role.role_Name}</option>
+									</c:if>
+								</c:forEach>
+							</select>
+						</div>
+
 						<div class="col-md-2 title">用户状态</div>
 						<div class="col-md-4 data">
 							<select class="form-control select2" style="width: 100%"

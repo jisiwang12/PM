@@ -1,12 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <html>
 <head>
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>修改用户</title>
+    <title>修改信息</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta
@@ -77,20 +79,25 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                用户管理 <small>用户表单</small>
+                系主任管理 <small>系主任表单</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/student/findAll">学生信息管理</a></li>
-                <li class="active">用户表单</li>
+                        href="${pageContext.request.contextPath}/yxzr/findAll">系主任信息管理</a></li>
+                <li class="active">系主任表单</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
-
+        <security:authorize access="hasRole('ROLE_ADMIN')">
         <form action="${pageContext.request.contextPath}/yxzr/update"
               method="post">
+            </security:authorize>
+                <security:authorize access="hasRole('ROLE_YXZR')">
+                <form action="${pageContext.request.contextPath}/yxzr/update_yxzr"
+                      method="post">
+                    </security:authorize>
             <!-- 正文区域 -->
             <section class="content"> <!--产品信息-->
 
@@ -108,20 +115,8 @@
                             <input type="text" class="form-control" name="age"
                                    value="${yxms.age}">
                         </div>
-                        <div class="col-md-2 title">院系</div>
-                        <div class="col-md-4 data">
-                            <select class="form-control select2" style="width: 100%"
-                                    name="yxid">
-                                <c:forEach items="${yxList}" var="c">
-                                    <c:if test="${yxms.yx.id==c.id}">
-                                        <option value="${c.id}" selected>${c.yxname}</option>
-                                    </c:if>
-                                    <c:if test="${yxms.yx.id!=c.id}">
-                                        <option value="${c.id}" >${c.yxname}</option>
-                                    </c:if>
-                                </c:forEach>
-                            </select>
-                        </div>
+                            <input type="text" class="form-control" name="yxid"
+                                  style="display: none" value="1">
                         <div class="col-md-2 title">性别</div>
                         <div class="col-md-4 data">
                             <select class="form-control select2" style="width: 100%"
@@ -135,6 +130,11 @@
                                     <option value="女" selected>女</option>
                                 </c:if>
                             </select>
+                        </div>
+                        <div class="col-md-2 title">电话</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" name="phone"
+                                   value="${yxms.phone}">
                         </div>
                     </div>
                 </div>

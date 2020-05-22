@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
 <!-- 页面meta -->
@@ -85,7 +87,7 @@
 				<li><a href="${pageContext.request.contextPath}/index.jsp"><i
 						class="fa fa-dashboard"></i> 首页</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/user/findAll.do">用户管理</a></li>
+					href="${pageContext.request.contextPath}/user/findAll">用户管理</a></li>
 				<li class="active">用户表单</li>
 			</ol>
 			</section>
@@ -100,16 +102,28 @@
 					<div class="panel-heading">用户信息</div>
 					<div class="row data-type">
 
-						<div class="col-md-2 title">用户名称</div>
+						<div class="col-md-2 title">用户名</div>
 						<div class="col-md-4 data">
 							<input type="text" class="form-control" name="uName"
-								placeholder="用户名称" value="">
+								placeholder="输入用户名" value="">
 						</div>
 						<div class="col-md-2 title">密码</div>
 						<div class="col-md-4 data">
 							<input type="password" class="form-control" name="uPass"
-								placeholder="密码" value="">
+								placeholder="输入密码" value="">
 						</div>
+
+						<div class="col-md-2 title">权限</div>
+						<div class="col-md-4 data">
+							<select class="form-control select2" style="width: 100%"
+									name="rid">
+								<c:forEach items="${roleList}" var="role">
+										<option  value="${role.role_id}">${role.role_Name}</option>
+								</c:forEach>
+								<option>flka</option>
+							</select>
+						</div>
+
 						<div class="col-md-2 title">用户状态</div>
 						<div class="col-md-4 data">
 							<select class="form-control select2" style="width: 100%"

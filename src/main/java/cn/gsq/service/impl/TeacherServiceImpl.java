@@ -16,30 +16,41 @@ import java.util.List;
 @Service
 public class TeacherServiceImpl implements ITeacherService {
     @Autowired
-    ITeacherDao iyxmsDao;
+    ITeacherDao teacherDao;
     @Override
     public List<Teacher> findAll(int page,int pageSize) {
         PageHelper.startPage(page, pageSize);
-        return iyxmsDao.findAll();
+        return teacherDao.findAll();
+    }
+
+    public List<Teacher> findAll() {
+        return teacherDao.findAll();
     }
 
     @Override
     public Teacher findById(String id) {
-        return iyxmsDao.findById(id);
+        return teacherDao.findById(id);
+    }
+
+
+
+    @Override
+    public void save(String name, String age, String sex, String yxid, String phone) {
+
+        teacherDao.save(name, age, sex, yxid,phone);
     }
 
     @Override
-    public void save(String name, String age, String sex, String yxid) {
-        iyxmsDao.save(name, age, sex, yxid);
-    }
-
-    @Override
-    public void update(String id, String name, String age, String sex, String yxid) {
-        iyxmsDao.update(id, name, age, sex, yxid);
+    public void update(String id, String name, String age, String sex, String yxid,String phone) {
+        teacherDao.update(id, name, age, sex, yxid,phone);
     }
 
     @Override
     public void del(String id) {
-        iyxmsDao.del(id);
+        teacherDao.del(id);
+    }
+
+    public void update_teacher(String id,String phone) {
+        teacherDao.update_teacher(id,phone);
     }
 }

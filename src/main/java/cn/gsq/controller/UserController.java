@@ -1,6 +1,9 @@
 package cn.gsq.controller;
 
+import cn.gsq.domain.Class;
+import cn.gsq.domain.Role;
 import cn.gsq.domain.UserInfo;
+import cn.gsq.service.IRoleService;
 import cn.gsq.service.IUserService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +20,15 @@ import java.util.List;
 public class UserController {
     @Autowired
     IUserService userService;
+    @Autowired
+    IRoleService roleService;
 
     @RequestMapping("/findAll")
     @RolesAllowed("ADMIN")
-    public ModelAndView findAll(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                @RequestParam(name = "pageSize", required = true, defaultValue = "2") int pageSize) {
+    public ModelAndView findAll() {
         ModelAndView mv = new ModelAndView();
-        List<UserInfo> users = userService.findAll(page, pageSize);
-        PageInfo pageInfo = new PageInfo(users);
-        mv.addObject("pageInfo", pageInfo);
+        List<UserInfo> users = userService.findAll();
+        mv.addObject("userList", users);
         mv.setViewName("user-list");
         return mv;
     }
@@ -40,8 +43,10 @@ public class UserController {
     public ModelAndView findById(String id) {
         ModelAndView modelAndView = new ModelAndView();
         UserInfo user = userService.findById(id);
-        modelAndView.setViewName("user-show");
+        List<Role> roleList = roleService.findAll();
         modelAndView.addObject("user", user);
+        modelAndView.addObject("roleList", roleList);
+        modelAndView.setViewName("user-show");
         return modelAndView;
     }
 
@@ -73,6 +78,15 @@ public class UserController {
         }
         mv.addObject("pwStatus", pwStatus);
         mv.setViewName("changepassword");
+        return mv;
+    }
+
+    @RequestMapping("/page")
+    public ModelAndView page() {
+        ModelAndView mv = new ModelAndView();
+        List<Role> roleList = roleService.findAll();
+        mv.addObject("roleList", roleList);
+        mv.setViewName("user-add");
         return mv;
     }
  }

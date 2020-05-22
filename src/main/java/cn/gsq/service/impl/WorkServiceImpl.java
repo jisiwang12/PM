@@ -1,5 +1,6 @@
 package cn.gsq.service.impl;
 
+import cn.gsq.dao.IScoreDao;
 import cn.gsq.dao.IWorkDao;
 import cn.gsq.domain.KQ;
 import cn.gsq.domain.Work;
@@ -12,6 +13,8 @@ import java.util.List;
 @Service
 public class WorkServiceImpl implements IWorkService {
 
+    @Autowired
+    IScoreDao scoreDao;
     @Autowired
     IWorkDao workDao;
     /**
@@ -42,5 +45,27 @@ public class WorkServiceImpl implements IWorkService {
             }
         }
         return workList;
+    }
+
+    public List<Work> findByCono(String id) {
+        return workDao.findByCono(id);
+    }
+
+    public Work findById(String id) {
+
+        return workDao.findById(id);
+    }
+
+    /**
+     * 录入成绩
+     * @param work
+     */
+    public void update(Work work) {
+        Integer first = work.getFirst();
+        Integer second = work.getSecond();
+        Integer third = work.getThird();
+        work.setWscore((first+second+third)/3);
+        workDao.update(work);
+        scoreDao.savework(work.getWsno(),work.getWcono(),work.getWscore());
     }
 }

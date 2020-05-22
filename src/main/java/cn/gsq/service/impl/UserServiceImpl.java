@@ -24,11 +24,19 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserDao userDao;
 
+    /**
+     * 登录验证
+     * @param s
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserInfo userInfo =null;
         try {
             userInfo=userDao.findUserByUsername(s);
+            System.out.println(userInfo.getuName());
+            System.out.println(userInfo.getuPass());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,6 +45,11 @@ public class UserServiceImpl implements IUserService {
         return user;
     }
 
+    /**
+     * 获取用户的权限
+     * @param roles
+     * @return
+     */
     public List<SimpleGrantedAuthority> getAuthority(List<Role> roles) {
         List<SimpleGrantedAuthority> list = new ArrayList<>();
         for (Role role:roles
@@ -47,32 +60,55 @@ public class UserServiceImpl implements IUserService {
         return list;
     }
 
+    /**
+     * 查找全部用户
+     * @return
+     */
     @Override
-    public List<UserInfo> findAll(int page, int pageSize) {
-        PageHelper.startPage(page, pageSize);
+    public List<UserInfo> findAll() {
         return userDao.findAll();
     }
 
+    /**
+     * 保存用户
+     * @param userInfo
+     */
     @Override
     public void save(UserInfo userInfo) {
         userInfo.setuPass(bCryptPasswordEncoder.encode(userInfo.getuPass()));
         userDao.save(userInfo);
     }
 
+    /**
+     * 通过id查找用户
+     * @param id
+     * @return
+     */
     @Override
     public UserInfo findById(String id) {
         UserInfo byId = userDao.findById(id);
         return byId;
     }
 
+    /**
+     * 通过id删除用户
+     * @param id
+     */
     @Override
     public void del(String id) {
         userDao.del(id);
     }
 
+    /**
+     * 修改用户
+     * @param userInfo
+     */
     @Override
     public void update(UserInfo userInfo) {
-        userInfo.setuPass(bCryptPasswordEncoder.encode(userInfo.getuPass()));
+        UserInfo byId = userDao.findById(userInfo.getId());
+        if (!userInfo.getuPass().equals(byId.getuPass())) {
+            userInfo.setuPass(bCryptPasswordEncoder.encode(userInfo.getuPass()));
+        }
         userDao.update(userInfo);
     }
 

@@ -2,13 +2,14 @@
          pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>学生信息管理</title>
+    <title>教师信息管理</title>
     <meta name="description" content="AdminLTE2定制版">
     <meta name="keywords" content="AdminLTE2定制版">
 
@@ -100,12 +101,12 @@
                 </div>
 
                 <div class="box-body">
-
+                    <security:authorize access="hasRole('ROLE_ADMIN')">
                     <!-- 数据表格 -->
                     <div class="table-box">
 
                         <!--工具栏-->
-                        <div class="pull-left">
+                        <div>
                             <div class="form-group form-inline">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/teacher/page'">
@@ -114,17 +115,10 @@
                                     <i class="fa fa-file-o"></i> 删除
                                 </button>
 
-                                    <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/student/findAll'">
+                                    <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/teacher/findAll'">
                                         <i class="fa fa-refresh"></i> 刷新
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback"></span>
                             </div>
                         </div>
                         <!--工具栏/-->
@@ -144,6 +138,7 @@
                                     <th class="text-center">性别</th>
                                     <th class="text-center">联系方式</th>
                                     <th class="text-center">院系</th>
+                                    <th class="text-center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -180,13 +175,83 @@
 
                     </div>
                     <!-- 数据表格 /-->
+                    </security:authorize>
+
+                    <security:authorize access="hasAnyRole('ROLE_TEACHER,ROLE_YXZR,ROLE_YZ')">
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+
+                            <!--工具栏-->
+                            <div>
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/teacher/page'">
+                                            <i class="fa fa-file-o"></i> 新建
+                                        </button><button type="button" id="delete" class="btn btn-default" title="删除">
+                                        <i class="fa fa-file-o"></i> 删除
+                                    </button>
+
+                                        <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/teacher/findAll'">
+                                            <i class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--工具栏/-->
+
+                            <!--数据列表-->
+                            <form action="${pageContext.request.contextPath}/teacher/del" id="form">
+                                <table id="dataList"
+                                       class="table table-bordered table-striped table-hover dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="sorting_asc">ID</th>
+                                        <th class="sorting_desc">姓名</th>
+                                        <th class="sorting">年龄</th>
+                                        <th class="text-center">性别</th>
+                                        <th class="text-center">联系方式</th>
+                                        <th class="text-center">院系</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <c:forEach items="${pageInfo.list}" var="teacher">
+                                        <tr>
+                                            <td>${teacher.id}</td>
+                                            <td>${teacher.name}</td>
+                                            <td>${teacher.age }</td>
+                                            <td>${teacher.sex}</td>
+                                            <td>${teacher.phone}</td>
+                                            <td class="text-center">${teacher.yx.yxname}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+
+                                    <!--
+                                <tfoot>
+                                <tr>
+                                <th>Rendering engine</th>
+                                <th>Browser</th>
+                                <th>Platform(s)</th>
+                                <th>Engine version</th>
+                                <th>CSS grade</th>
+                                </tr>
+                                </tfoot>-->
+                                </table>
+                            </form>
+                            <!--数据列表/-->
+
+                        </div>
+                        <!-- 数据表格 /-->
+
+                    </security:authorize>
 
                 </div>
                 <!-- /.box-body -->
 
                 <!-- .box-footer-->
                 <!-- .box-footer-->
-                <div class="box-footer">
+               <%-- <div class="box-footer">
                     <div class="pull-left">
                         <div class="form-group form-inline">
                             总共${pageInfo.pages}页，共${pageInfo.total} 条数据。 每页
@@ -228,7 +293,7 @@
                         </ul>
                     </div>
 
-                </div>
+                </div>--%>
                 <!-- /.box-footer-->
 
 
@@ -245,15 +310,6 @@
     <!-- @@close -->
     <!-- 内容区域 /-->
 
-    <!-- 底部导航 -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.8
-        </div>
-        <strong>Copyright &copy; 2014-2017 <a
-                href="http://www.itcast.cn">研究院研发部</a>.
-        </strong> All rights reserved. </footer>
-    <!-- 底部导航 /-->
 
 </div>
 
@@ -316,6 +372,34 @@
 
     }
     $(document).ready(function() {
+
+        $(function() {
+            $('#dataList').DataTable({
+                "pagingType": "full_numbers",
+
+                "language": {
+                    //"info": "当前第_PAGE_页，共 _PAGES_页",
+                    "sInfo": "当前显示第 _START_ 到第 _END_ 条，共 _TOTAL_ 条",
+                    "sInfoFiltered": "(从_MAX_条筛选 )",
+                    "sInfoEmpty": "共筛选到0条",
+                    "sSearch": "搜索:",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "未筛选到相关内容",
+                    "paginate": {
+                        "sFirst": "首页",  //首页和尾页必须在pagingType设为full_numbers时才可以
+                        "sLast": "尾页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "first": "First page",
+                        "last": "Last page",
+                        "next": "Next page",
+                        "previous": "Previous page"
+                    }
+
+                }
+
+            });
+        });
         // 选择框
         $(".select2").select2();
         deleteById();

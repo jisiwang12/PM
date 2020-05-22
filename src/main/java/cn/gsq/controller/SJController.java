@@ -1,80 +1,126 @@
-//package cn.gsq.controller;
-//
-//import cn.gsq.domain.Class;
-//import cn.gsq.domain.Student;
-//import cn.gsq.domain.YX;
-//import cn.gsq.domain.YXMS;
-//import cn.gsq.service.impl.YXMSServiceImpl;
-//import cn.gsq.service.impl.YXServiceImpl;
-//import cn.gsq.service.impl.ZYServiceImpl;
-//import com.github.pagehelper.PageInfo;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.servlet.ModelAndView;
-//import sun.security.util.ManifestEntryVerifier;
-//
-//import java.util.List;
-//
-///**
-// * 教学秘书
-// */
-//@Controller
-//@RequestMapping("/yxms")
-//public class SJController {
-//    @Autowired
-//    YXMSServiceImpl yxmsService;
-//    @Autowired
-//    YXServiceImpl sjService;
-//
-//    @RequestMapping("findAll")
-//    public ModelAndView findAll(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
-//                                @RequestParam(name = "pageSize", required = true, defaultValue = "2") int pageSize) {
-//        ModelAndView mv = new ModelAndView();
-//        List<SJ> all = sjService.findAll(page, pageSize);
-//        PageInfo pageInfo = new PageInfo(all);
-//        mv.addObject("pageInfo", pageInfo);
-//        mv.setViewName("sj-list");
-//        return mv;
-//    }
-//
-//    @RequestMapping("/findById")
-//    public ModelAndView findById(String id) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        YXMS byId_stu = sjService.findById(id);
-//        modelAndView.addObject("sj", byId_stu);
-//        modelAndView.setViewName("sj-show");
-//        return modelAndView;
-//    }
-//
-//
-//    @RequestMapping("save")
-//    public String save(@RequestParam(name = "coid", required = true) String coid,
-//                       @RequestParam(name = "tid", required = true) String tid,
-//                       @RequestParam(name = "max", required = true) String max,
-//                       @RequestParam(name = "min", required = true) String min) {
-//        yxmsService.save(coid,tid,max,min);
-//        return "redirect:findAll";
-//    }
-//
-//    @RequestMapping("update")
-//    public String update(@RequestParam(name = "id", required = true) String id,
-//                         @RequestParam(name = "coid", required = true) String coid,
-//                         @RequestParam(name = "tid", required = true) String tid,
-//                         @RequestParam(name = "max", required = true) String max,
-//                         @RequestParam(name = "min", required = true) String min) {
-//        yxmsService.update(id, coid,tid,max,min);
-//        return "redirect:findAll";
-//    }
-//
-//    @RequestMapping("/del")
-//    public String del(String[] ids) {
-//        if (ids != null && ids.length != 0) {
-//            for (String id:ids) {
-//                yxmsService.del(id);
-//            }
-//        }
-//        return "redirect:findAll";
-//    }
-//}
+package cn.gsq.controller;
+
+
+import cn.gsq.domain.*;
+import cn.gsq.service.impl.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+@RequestMapping("/sj")
+public class SJController {
+
+    @Autowired
+    ScoreServiceImpl scoreService;
+    @Autowired
+    CourseServiceImpl courseService;
+    @Autowired
+    SJServiceImpl sjService;
+    @Autowired
+    TeacherServiceImpl teacherService;
+
+    @RequestMapping("/findByCono")
+    public ModelAndView findByCono(String id) {
+        ModelAndView mv = new ModelAndView();
+        SJ byCono = sjService.findByCono(id);
+        mv.addObject("sj", byCono);
+        mv.setViewName("sj-list");
+        return mv;
+    }
+
+    public ModelAndView page(String name) {
+        ModelAndView mv = new ModelAndView();
+        String id = name.substring(1, name.length());
+        List<Course> courseList = courseService.findByTid(id);
+        mv.addObject("courseList", courseList);
+        mv.setViewName("sj-add");
+        return mv;
+    }
+
+    @RequestMapping("/update")
+    public String update(SJ sj) {
+        SJ sj1 = sjService.findByID(sj.getId());
+        Course course = sj1.getCourse();
+        String tid = course.getTid();
+        sjService.update(sj);
+        return "redirect:findByName?name=t" + tid;
+
+    }
+
+    @RequestMapping("/findById")
+    public ModelAndView findById(String id) {
+        ModelAndView mv = new ModelAndView();
+        SJ byID = sjService.findByID(id);
+        mv.setViewName("sj-show");
+        mv.addObject("sj", byID);
+        return mv;
+    }
+
+/*    @RequestMapping("/findByName")
+    public ModelAndView findByName(String name) {
+        ModelAndView mv = new ModelAndView();
+        String tid = name.substring(1, name.length());
+        List<Course> courseList = courseService.findByTid(tid);
+        mv.addObject("courseList", courseList);
+        mv.setViewName("cj-list");
+        return mv;
+    }*/
+
+    @RequestMapping("/findByName")
+    public ModelAndView findByName(String name) {
+        ModelAndView mv = new ModelAndView();
+        String tid = name.substring(1, name.length());
+        List<Course> courseList = courseService.findByTid(tid);
+        ArrayList<SJ> sjList = new ArrayList<>();
+        if (courseList != null && courseList.size() != 0) {
+            Teacher teacher = courseList.get(0).getTeacher();
+            mv.addObject("teacher", teacher);
+            for (Course course : courseList) {
+                String cono = course.getCono();
+                SJ byCono = sjService.findByCono(cono);
+                if (byCono != null) {
+                    sjList.add(byCono);
+                }
+            }
+        }
+        mv.addObject("sjList", sjList);
+
+        mv.setViewName("sj-list");
+        return mv;
+    }
+
+    @RequestMapping("/findByConotoxx")
+    public ModelAndView findByConotoxx(String id) {
+        ModelAndView mv = new ModelAndView();
+        List<Score> scoreList = scoreService.findByCono(id);
+        mv.addObject("scoreList", scoreList);
+        mv.setViewName("cj-score-list");
+        return mv;
+    }
+
+    @RequestMapping("/del")
+    public String del(String[] ids) {
+        SJ byID = sjService.findByID(ids[0]);
+        String tid = byID.getCourse().getTid();
+        tid = "t" + tid;
+        if (ids != null && ids.length != 0) {
+            for (String id : ids) {
+                sjService.del(id);
+            }
+        }
+        return "redirect:findByName?id=" + tid;
+    }
+
+    @RequestMapping("/test")
+    public void test() {
+        SJ byCono = sjService.findByCono("1");
+        System.out.println(byCono);
+    }
+
+}

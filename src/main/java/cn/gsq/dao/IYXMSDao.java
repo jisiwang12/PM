@@ -37,8 +37,8 @@ public interface IYXMSDao {
     @Insert("insert into yxms (name, age, sex, yx) value (#{arg0},#{arg1},#{arg2},#{arg3})")
     void save(String name, String age, String sex, String yxid);
 
-    @Update("update yxms set name=#{arg1},age=#{arg2},sex=#{arg3},yx=#{arg4} where id=#{arg0}")
-    void update(String id, String name, String age, String sex, String yxid);
+    @Update("update yxms set name=#{arg1},age=#{arg2},sex=#{arg3} where id=#{arg0}")
+    void update(String id, String name, String age, String sex);
 
     @Delete("delete from yxms where id=#{id}")
     void del(String id);

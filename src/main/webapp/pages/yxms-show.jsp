@@ -6,7 +6,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>修改用户</title>
+    <title>修改个人信息</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta
@@ -77,14 +77,14 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                用户管理 <small>用户表单</small>
+                个人信息管理 <small>信息表单</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/student/findAll">学生信息管理</a></li>
-                <li class="active">用户表单</li>
+                        href="${pageContext.request.contextPath}/student/findAll">个人信息管理</a></li>
+                <li class="active">信息表单</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
@@ -95,7 +95,7 @@
             <section class="content"> <!--产品信息-->
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">教学秘书信息</div>
+                    <div class="panel-heading">个人信息</div>
                     <div class="row data-type">
                         <input type="hidden" name="id" value="${yxms.id}">
                         <div class="col-md-2 title">姓名</div>
@@ -107,21 +107,6 @@
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" name="age"
                                    value="${yxms.age}">
-                        </div>
-                        <div class="col-md-2 title">院系</div>
-                        <div class="col-md-4 data">
-                            <select class="form-control select2" style="width: 100%"
-                                    name="yxid">
-
-                                <c:forEach items="${yxList}" var="c">
-                                    <c:if test="${yxms.yx.id==c.id}">
-                                        <option value="${c.id}" selected>${c.yxname}</option>
-                                    </c:if>
-                                    <c:if test="${yxms.yx.id!=c.id}">
-                                        <option value="${c.id}" >${c.yxname}</option>
-                                    </c:if>
-                                </c:forEach>
-                            </select>
                         </div>
                         <div class="col-md-2 title">性别</div>
                         <div class="col-md-4 data">

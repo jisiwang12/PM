@@ -7,7 +7,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>添加学生信息</title>
+    <title>添加系主任信息</title>
     <meta name="description" content="AdminLTE2定制版">
     <meta name="keywords" content="AdminLTE2定制版">
 
@@ -80,14 +80,14 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                用户管理 <small>用户表单</small>
+                系主任管理 <small>系主任表单</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/yxzr/findAll">学生信息管理</a></li>
-                <li class="active">用户表单</li>
+                        href="${pageContext.request.contextPath}/yxzr/findAll">系主任信息管理</a></li>
+                <li class="active">系主任表单</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
@@ -98,7 +98,7 @@
             <section class="content"> <!--产品信息-->
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">教学秘书信息</div>
+                    <div class="panel-heading">系主任信息</div>
                     <div class="row data-type">
                         <div class="col-md-2 title">姓名</div>
                         <div class="col-md-4 data">
@@ -118,19 +118,11 @@
                                 <option value="女">女</option>
                             </select>
                         </div>
-                        <div class="col-md-2 title">院系</div>
+
+                            <input type="text" style="display: none" name="yxid" value="1">
+                        <div class="col-md-2 title">联系电话</div>
                         <div class="col-md-4 data">
-                            <select class="form-control select2" style="width: 100%"
-                                    name="yxid">
-                                <c:forEach items="${yxList}" var="c">
-                                    <c:if test="${yxms.yx.id==c.id}">
-                                        <option value="${c.id}" selected>${c.yxname}</option>
-                                    </c:if>
-                                    <c:if test="${yxms.yx.id!=c.id}">
-                                        <option value="${c.id}" >${c.yxname}</option>
-                                    </c:if>
-                                </c:forEach>
-                            </select>
+                            <input type="text" class="form-control" name="phone">
                         </div>
 
                     </div>
@@ -147,15 +139,6 @@
     </div>
     <!-- 内容区域 /-->
 
-    <!-- 底部导航 -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.8
-        </div>
-        <strong>Copyright &copy; 2014-2017 <a
-                href="http://www.itcast.cn">研究院研发部</a>.
-        </strong> All rights reserved. </footer>
-    <!-- 底部导航 /-->
 
 </div>
 

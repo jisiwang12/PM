@@ -26,7 +26,7 @@ public interface IKQDao {
             @Result(property = "student",column = "ksno",  javaType = cn.gsq.domain.Student.class, one = @One(select =
                     "cn.gsq.dao.IStudentDao.findBySno")),
             @Result(column = "kcono", property = "course", javaType = cn.gsq.domain.Course.class, one = @One(select =
-                    "cn.gsq.dao.ICourseDao.findById"))
+                    "cn.gsq.dao.ICourseDao.findByCono"))
     })
     public List<KQ> findAll();
 
@@ -38,19 +38,9 @@ public interface IKQDao {
     @Update("update kq set kq.cd=#{arg1},kq.kk=#{arg2},kqsc=#{arg3} where kq.kqid=#{arg0}")
     public void update(String id, String cd, String kq,int count);
 
-    @Select("select * from kq")
-    @Results({
-            @Result(property = "kqid", column = "kqid", id = true),
-            @Result(property = "sno", column = "ksno"),
-            @Result(property = "sSex", column = "kcono"),
-            @Result(column = "scid", property = "classn", javaType = cn.gsq.domain.Class.class, one = @One(select =
-                    "cn.gsq.dao.StudentDao.findById_class")),
-            @Result(column = "zyid", property = "zy", javaType = cn.gsq.domain.ZY.class, one = @One(select =
-                    "cn.gsq.dao.StudentDao.findById_zy")),
-            @Result(column = "syxid", property = "yx", javaType = cn.gsq.domain.YX.class, one = @One(select =
-                    "cn.gsq.dao.StudentDao.findById_yx"))
-    })
-    public List<KQ> findBycoid(String id);
+    @Select("select * from kq where kcono=#{id} order by ksno asc")
+    @ResultMap("kqMap")
+    public List<KQ> findByCono(String id);
 
 
     @Insert("insert into kq ( ksno, kcono, cd, kk, kqsc) values (#{arg0},#{arg4},#{arg1},#{arg2},#{arg3})")

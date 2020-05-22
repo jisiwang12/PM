@@ -7,7 +7,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>数据 - AdminLTE2定制版</title>
+    <title>课程作业成绩修改</title>
     <meta name="description" content="AdminLTE2定制版">
     <meta name="keywords" content="AdminLTE2定制版">
 
@@ -78,20 +78,9 @@
     <div class="content-wrapper">
 
         <!-- 内容头部 -->
-        <section class="content-header">
-            <h1>
-                考勤成绩管理 <small>考勤成绩表单</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="${pageContext.request.contextPath}/index.jsp"><i
-                        class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a href="${pageContext.request.contextPath}/kq/findAll">考勤成绩管理</a></li>
-                <li class="active">课程作业信息修改</li>
-            </ol>
-        </section>
         <!-- 内容头部 /-->
 
-        <form action="${pageContext.request.contextPath}/kq/update"
+        <form action="${pageContext.request.contextPath}/work/update"
               method="get">
             <!-- 正文区域 -->
             <section class="content"> <!--信息-->
@@ -100,38 +89,40 @@
                     <div class="panel-heading">课程作业信息修改</div>
                     <div class="row data-type">
                         <div>
-                            <input type="hidden" name="id" value="${cj.kqid}">
+                            <input type="hidden" name="id" value="${cj.id}">
                         </div>
                         <div class="col-md-2 title">学号</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" readonly="readonly"
-                                   placeholder="2016010103" value="">
+                                name="wsno"    value="${cj.wsno}">
                         </div>
+                        <input type="text" class="form-control" style="display: none"
+                               name="wcono"    value="${cj.wcono}">
                         <div class="col-md-2 title">学生姓名</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" readonly="readonly"
-                                   placeholder="赵明" value="">
+                                    value="${cj.student.sName}">
                         </div>
                         <div class="col-md-2 title">课程名称</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" readonly="readonly"
-                                   placeholder="2016级物联网1班" value="">
+                                    value="${cj.course.coname}">
                         </div>
                         <div class="col-md-2 title">第一次作业成绩</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="cd"
-                                   placeholder="" value="85">
+                            <input type="number" class="form-control" name="first"
+                                   placeholder="" value="${cj.first}">
                         </div>
                         <div class="col-md-2 title">第二次作业成绩</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="kk"
-                                   placeholder="" value="0">
+                            <input type="number" class="form-control" name="second"
+                                   placeholder="" value="${cj.second}">
                         </div>
 
                         <div class="col-md-2 title">第三次作业成绩</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="kk"
-                                   placeholder="" value="0">
+                            <input type="number" class="form-control" name="third"
+                                   placeholder="" value="${cj.third}">
                         </div>
 
 

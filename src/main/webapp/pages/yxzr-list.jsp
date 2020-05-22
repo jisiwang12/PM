@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,9 +9,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>学生信息管理</title>
-    <meta name="description" content="AdminLTE2定制版">
-    <meta name="keywords" content="AdminLTE2定制版">
+    <title>系主任信息管理</title>
+
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta
@@ -75,19 +75,19 @@
 
     <!-- 内容区域 -->
     <div class="content-wrapper">
-
+        <security:authorize access="hasRole('ROLE_ADMIN')">
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                院系主任管理 <small>全部院系主任</small>
+                系主任管理 <small>全部系主任</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/pages/main.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/student/findAll">院系主任信息管理</a></li>
+                        href="${pageContext.request.contextPath}/student/findAll">系主任信息管理</a></li>
 
-                <li class="active">全部院系主任</li>
+                <li class="active">全部系主任</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
@@ -105,7 +105,7 @@
                     <div class="table-box">
 
                         <!--工具栏-->
-                        <div class="pull-left">
+                        <div class="">
                             <div class="form-group form-inline">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/yxzr/page'">
@@ -114,36 +114,34 @@
                                     <i class="fa fa-file-o"></i> 删除
                                 </button>
 
-                                    <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/student/findAll'">
+                                    <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/yxzr/findAll'">
                                         <i class="fa fa-refresh"></i> 刷新
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                        </div>
+
                         <!--工具栏/-->
 
                         <!--数据列表-->
                         <form action="${pageContext.request.contextPath}/yxzr/del" id="form">
-                            <table id="dataList"
+                            <table id=""
                                    class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
+
                                 <tr>
+
                                     <th class="" style="padding-right: 0px"><input
                                             id="selall" type="checkbox" class="icheckbox_square-blue">
                                     </th>
+
                                     <th class="sorting_asc">ID</th>
                                     <th class="sorting_desc">姓名</th>
                                     <th class="sorting">年龄</th>
                                     <th class="text-center">性别</th>
                                     <th class="text-center">联系电话</th>
                                     <th class="text-center">院系</th>
+                                    <th class="text-center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -186,7 +184,7 @@
 
                 <!-- .box-footer-->
                 <!-- .box-footer-->
-                <div class="box-footer">
+             <%--   <div class="box-footer">
                     <div class="pull-left">
                         <div class="form-group form-inline">
                             总共${pageInfo.pages}页，共${pageInfo.total} 条数据。 每页
@@ -228,7 +226,7 @@
                         </ul>
                     </div>
 
-                </div>
+                </div>--%>
                 <!-- /.box-footer-->
 
 
@@ -239,21 +237,75 @@
 
 
         </section>
+        </security:authorize>
         <!-- 正文区域 /-->
 
+
+        <security:authorize access="hasRole('ROLE_YXZR')">
+
+            <section class="content"> <!-- .box-body -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">列表</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+
+                            <!--工具栏-->
+
+                            <!--工具栏/-->
+
+                            <!--数据列表-->
+                            <form action="${pageContext.request.contextPath}/yxzr/del" id="form">
+                                <table id="dataList"
+                                       class="table table-bordered table-striped table-hover dataTable">
+                                    <thead>
+                                        <th class="sorting_asc">ID</th>
+                                        <th class="sorting_desc">姓名</th>
+                                        <th class="sorting">年龄</th>
+                                        <th class="text-center">性别</th>
+                                        <th class="text-center">联系电话</th>
+                                        <th class="text-center">院系</th>
+                                        <th class="text-center">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td>${yxzr.id}</td>
+                                            <td>${yxzr.name}</td>
+                                            <td>${yxzr.age }</td>
+                                            <td>${yxzr.sex}</td>
+                                            <td>${yxzr.phone}</td>
+                                            <td>${yxzr.yx.yxname}</td>
+                                            <td class="text-center">
+                                                <a href="${pageContext.request.contextPath}/yxzr/findById/?id=${yxzr.id}" class="btn bg-olive btn-xs">修改</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </form>
+                            <!--数据列表/-->
+
+                        </div>
+                        <!-- 数据表格 /-->
+
+                    </div>
+                </div>
+                <!-- /.box-footer-->
+
+
+
+            </section>
+        </security:authorize>
     </div>
     <!-- @@close -->
     <!-- 内容区域 /-->
 
-    <!-- 底部导航 -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.8
-        </div>
-        <strong>Copyright &copy; 2014-2017 <a
-                href="http://www.itcast.cn">研究院研发部</a>.
-        </strong> All rights reserved. </footer>
-    <!-- 底部导航 /-->
 
 </div>
 
@@ -316,6 +368,35 @@
 
     }
     $(document).ready(function() {
+        <security:authorize access="hasRole('ROLE_ADMIN')">
+        $(function() {
+            $('#dataList').DataTable({
+                "pagingType": "full_numbers",
+
+                "language": {
+                    //"info": "当前第_PAGE_页，共 _PAGES_页",
+                    "sInfo": "当前显示第 _START_ 到第 _END_ 条，共 _TOTAL_ 条",
+                    "sInfoFiltered": "(从_MAX_条筛选 )",
+                    "sInfoEmpty": "共筛选到0条",
+                    "sSearch": "搜索:",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "未筛选到相关内容",
+                    "paginate": {
+                        "sFirst": "首页",  //首页和尾页必须在pagingType设为full_numbers时才可以
+                        "sLast": "尾页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "first": "First page",
+                        "last": "Last page",
+                        "next": "Next page",
+                        "previous": "Previous page"
+                    }
+
+                }
+
+            });
+        });
+        </security:authorize>
         // 选择框
         $(".select2").select2();
         deleteById();

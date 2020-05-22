@@ -27,10 +27,9 @@ public class TeacherController {
     YXServiceImpl yxService;
 
     @RequestMapping("findAll")
-    public ModelAndView findAll(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                @RequestParam(name = "pageSize", required = true, defaultValue = "2") int pageSize) {
+    public ModelAndView findAll() {
         ModelAndView mv = new ModelAndView();
-        List<Teacher> all = teacherService.findAll(page, pageSize);
+        List<Teacher> all = teacherService.findAll();
         PageInfo pageInfo = new PageInfo(all);
         mv.addObject("pageInfo", pageInfo);
         mv.setViewName("teacher-list");
@@ -41,8 +40,6 @@ public class TeacherController {
     public ModelAndView findById(String id) {
         ModelAndView modelAndView = new ModelAndView();
         Teacher byId_stu = teacherService.findById(id);
-        List<YX> all = yxService.findAll();
-        modelAndView.addObject("yxList", all);
         modelAndView.addObject("teacher", byId_stu);
         modelAndView.setViewName("teacher-show");
         return modelAndView;
@@ -51,9 +48,7 @@ public class TeacherController {
     @RequestMapping("/page")
     public ModelAndView page(String id) {
         Teacher teacher = teacherService.findById(id);
-        List<YX> yx = yxService.findAll();
         ModelAndView mv = new ModelAndView();
-        mv.addObject("yxList", yx);
         mv.addObject("teacher", teacher);
         mv.setViewName("teacher-add");
         return mv;
@@ -63,8 +58,9 @@ public class TeacherController {
     public String save(@RequestParam(name = "name", required = true) String name,
                        @RequestParam(name = "age", required = true) String age,
                        @RequestParam(name = "sex", required = true) String sex,
+                       @RequestParam(name = "phone", required = true) String phone,
                        @RequestParam(name = "yxid", required = true) String yxid) {
-        teacherService.save(name, age, sex, yxid);
+        teacherService.save(name, age, sex, yxid, phone);
         return "redirect:findAll";
     }
 
@@ -73,18 +69,44 @@ public class TeacherController {
                          @RequestParam(name = "name", required = true) String name,
                          @RequestParam(name = "age", required = true) String age,
                          @RequestParam(name = "sex", required = true) String sex,
+                         @RequestParam(name = "phone", required = true) String phone,
                          @RequestParam(name = "yxid", required = true) String yxid) {
-        teacherService.update(id, name, age, sex, yxid);
+        teacherService.update(id, name, age, sex, yxid, phone);
         return "redirect:findAll";
     }
 
     @RequestMapping("/del")
     public String del(String[] ids) {
         if (ids != null && ids.length != 0) {
-            for (String id:ids) {
+            for (String id : ids) {
                 teacherService.del(id);
             }
         }
         return "redirect:findAll";
+    }
+
+
+    /**
+     * 教师用户通过用户名查询
+     *
+     * @return
+     */
+    @RequestMapping("/findByName")
+    public ModelAndView findByName(String name) {
+        String tname = name.substring(1, name.length());
+        Teacher byId = teacherService.findById(tname);
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("teacher", byId);
+        mv.setViewName("teacher-self");
+        return mv;
+    }
+
+    @RequestMapping("/update_teacher")
+    public String update_teacher(@RequestParam(name = "id", required = true) String id,
+                               @RequestParam(name = "phone", required = true) String phone) {
+        teacherService.update_teacher(id,phone);
+        Teacher byId = teacherService.findById(id);
+        String name = byId.getName();
+        return "redirect:findByName?name=t"+id;
     }
 }

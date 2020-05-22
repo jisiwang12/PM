@@ -38,8 +38,12 @@ public class KQServiceImpl implements IKQService {
     @Override
     public void update(String id, String cd, String kk) {
         int count = 100;
+        KQ byId = kqDao.findById(id);
+        String cono = byId.getCono();
+        String sno = byId.getSno();
         if (Integer.parseInt(kk) >= 3) {
             count = 0;
+            scoreDao.savekq3(sno,cono,count);
         } else {
             for (int i = 1; i <=Integer.parseInt(kk); i++) {
                 count-=10;
@@ -47,7 +51,9 @@ public class KQServiceImpl implements IKQService {
             for (int i = 1; i <=Integer.parseInt(cd) ; i++) {
                 count-=5;
             }
+            scoreDao.savekq(sno,cono,count);
         }
+
         kqDao.update(id,cd,kk,count);
     }
 
@@ -102,5 +108,15 @@ public class KQServiceImpl implements IKQService {
     @Override
     public List<KQ> findBySno(String sno) {
         return kqDao.findBySno(sno);
+    }
+
+
+    /**
+     * 通过课程号查询
+     * @param id
+     * @return
+     */
+    public List<KQ> findByCono(String id) {
+        return kqDao.findByCono(id);
     }
 }

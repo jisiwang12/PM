@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,8 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <title>用户管理</title>
-<meta name="description" content="AdminLTE2定制版">
-<meta name="keywords" content="AdminLTE2定制版">
+
 
 <!-- Tell the browser to be responsive to screen width -->
 <meta
@@ -103,14 +104,15 @@
 
 						<!-- 数据表格 -->
 						<div class="table-box">
-
+							<security:authentication property="principal.username" var="name"></security:authentication>
 							<!--工具栏-->
-							<div class="pull-left">
+							<div class="">
 								<div class="form-group form-inline">
 									<div class="btn-group">
-										<button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/pages/user-add.jsp'">
+										<button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/user/page'">
 											<i class="fa fa-file-o"></i> 新建
-										</button><button type="button" id="delete" class="btn btn-default" title="删除">
+										</button>
+										<button type="button"  class="btn btn-default" data-toggle="modal" data-target="#myModal" title="删除">
 											<i class="fa fa-file-o"></i> 删除
 										</button>
 										
@@ -120,12 +122,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="box-tools pull-right">
-								<div class="has-feedback">
-									<input type="text" class="form-control input-sm"
-										placeholder="搜索"> <span
-										class="glyphicon glyphicon-search form-control-feedback"></span>
-								</div>
+
 							</div>
 							<!--工具栏/-->
 
@@ -141,19 +138,25 @@
 										<th class="sorting_asc">ID</th>
 										<th class="sorting_desc">用户名</th>
 										<th class="sorting">状态</th>
+										<th class="sorting">权限</th>
 										<th class="text-center">操作</th>
 									</tr>
 								</thead>
 								<tbody>
 
-									<c:forEach items="${pageInfo.list}" var="user">
+									<c:forEach items="${userList}" var="user">
 										<tr>
 											<td><input name="ids" type="checkbox" value="${user.id}"></td>
 											<td>${user.id }</td>
 											<td>${user.uName }</td>
 											<td>${user.statusStr}</td>
+											<td>${user.roles.get(0).role_Name}</td>
 											<td class="text-center">
+												<c:if test="${name==user.uName}">
+													<a href="#" class="btn bg-red btn-xs">当前用户</a>
+												</c:if>
 												<a href="${pageContext.request.contextPath}/user/findById?id=${user.id}" class="btn bg-olive btn-xs">修改</a>
+
 											</td>
 										</tr>
 									</c:forEach>
@@ -177,11 +180,42 @@
 						<!-- 数据表格 /-->
 
 					</div>
+
+
+					<!-- 模态框（Modal） -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										删除用户
+									</h4>
+								</div>
+								<div class="modal-body">
+									确定要删除吗？
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">取消
+									</button>
+									<button type="button" id="delete" class="btn btn-primary">
+										确定
+									</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					</div>
+					<!-- 模态框（Modal） /-->
+
+
+
 					<!-- /.box-body -->
 
 					<!-- .box-footer-->
 					<!-- .box-footer-->
-					<div class="box-footer">
+					<%--<div class="box-footer">
 						<div class="pull-left">
 							<div class="form-group form-inline">
 								总共${pageInfo.pages}页，共${pageInfo.total} 条数据。 每页
@@ -221,14 +255,14 @@
 									<a href="${pageContext.request.contextPath}/user/findAll?page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>
 								</li>
 							</ul>
-						</div>
+						</div>--%>
 
 					</div>
 					<!-- /.box-footer-->
 
 
 
-				</div>
+
 					<!-- /.box-footer-->
 
 
@@ -241,13 +275,7 @@
 			<!-- 内容区域 /-->
 
 			<!-- 底部导航 -->
-			<footer class="main-footer">
-			<div class="pull-right hidden-xs">
-				<b>Version</b> 1.0.8
-			</div>
-			<strong>Copyright &copy; 2014-2017 <a
-				href="http://www.itcast.cn">研究院研发部</a>.
-			</strong> All rights reserved. </footer>
+
 			<!-- 底部导航 /-->
 
 		</div>
@@ -317,6 +345,34 @@
 				// WYSIHTML5编辑器
 				$(".textarea").wysihtml5({
 					locale : 'zh-CN'
+				});
+
+				$(function() {
+					$('#dataList').DataTable({
+						"pagingType": "full_numbers",
+
+						"language": {
+							//"info": "当前第_PAGE_页，共 _PAGES_页",
+							"sInfo": "当前显示第 _START_ 到第 _END_ 条，共 _TOTAL_ 条",
+							"sInfoFiltered": "(从_MAX_条筛选 )",
+							"sInfoEmpty": "共筛选到0条",
+							"sSearch": "搜索:",
+							"sLengthMenu": "每页显示 _MENU_ 条",
+							"sZeroRecords": "未筛选到相关内容",
+							"paginate": {
+								"sFirst": "首页",  //首页和尾页必须在pagingType设为full_numbers时才可以
+								"sLast": "尾页",
+								"sPrevious": "上一页",
+								"sNext": "下一页",
+								"first": "First page",
+								"last": "Last page",
+								"next": "Next page",
+								"previous": "Previous page"
+							}
+
+						 }
+
+					});
 				});
 			});
 

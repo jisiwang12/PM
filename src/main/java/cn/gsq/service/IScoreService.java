@@ -9,4 +9,5 @@ public interface IScoreService {
     public List<Score> findBySno(String sno);
 
     public List<Score> findByTime(String sno, String time);
+
 }

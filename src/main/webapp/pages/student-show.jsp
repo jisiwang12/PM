@@ -102,7 +102,7 @@
                         <input type="hidden" name="id" value="${student.id}">
                         <div class="col-md-2 title">学号</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="sNo"
+                            <input type="text" readonly="readonly" class="form-control" name="sNo"
                                    value="${student.sNo}">
                         </div>
                         <div class="col-md-2 title">姓名</div>

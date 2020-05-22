@@ -165,7 +165,9 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <security:authorize access="hasRole('ROLE_STUDENT')">
                 <li><a href="${pageContext.request.contextPath}/work/findBySno?sno=t${workList.get(0).wsno}">课程作业成绩</a></li>
+                </security:authorize>
                 <li class="active">成绩列表</li>
             </ol>
         </section>
@@ -186,79 +188,150 @@
                     <div class="table-box">
 
                         <!--工具栏-->
-                        <div class="pull-left">
+                        <div class="">
                             <div class="form-group form-inline">
                                 <div class="btn-group">
-                                    <button type="button" id="sx" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/work/findBySno?sno=t${workList.get(0).wsno}'">
-                                        <i class="fa fa-refresh"></i> 刷新
-                                    </button>
+                                    <security:authorize access="hasRole('ROLE_STUDENT')">
+                                        <button type="button" id="sx" class="btn btn-default" title="刷新"
+                                                onclick="location.href='${pageContext.request.contextPath}/work/findBySno?sno=t${workList.get(0).wsno}'">
+                                            <i class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </security:authorize>
+                                    <security:authorize access="hasRole('ROLE_TEACHER')">
+                                        <button type="button" id="sx" class="btn btn-default" title="刷新"
+                                                onclick="location.href='${pageContext.request.contextPath}/work/findByCono?id=${workList.get(0).wcono}'">
+                                            <i class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </security:authorize>
                                 </div>
                             </div>
                         </div>
-                        <%--<div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                    placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                        </div>--%>
-                        <div class="pull-right">
+                        <security:authorize access="hasRole('ROLE_STUDENT')">
+                        <div class>
                             <b>按学期查询:</b>
                             <select class="form-control select2 " style="width: 220px" id="changeTime" onchange="changeTime()">
                                 <option style='display: none'></option>
                                 <c:forEach items="${timeList}" var="time">
-                                    <option value="${time}" >${time}</option>
+                                    <option value="${time}">${time}</option>
                                 </c:forEach>
                             </select>
                         </div>
                         <!--工具栏/-->
 
                         <!--数据列表-->
-                        <table id="dataList"
-                               class="table table-bordered table-striped table-hover dataTable">
-                            <thead>
-                            <tr>
-                                <th class="text-center">课程</th>
-                                <th class="text-center">学分</th>
-                                <th class="text-center">任课教师</th>
-                                <th class="text-center">开课学期</th>
-                                <th class="text-center">第一次作业成绩</th>
-                                <th class="text-center">第二次作业成绩</th>
-                                <th class="text-center">第三次作业成绩</th>
-                                <th class="text-center">课程作业总成绩</th>
-                            </tr>
-                            </thead>
-                            <tbody>
 
 
-                            <c:forEach items="${workList}" var="all">
 
+                            <table id="dataList"
+                                   class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
                                 <tr>
-                                    <td class="text-center">${all.course.coname}</td>
-                                    <td class="text-center">${all.course.xf}</td>
-                                    <td class="text-center">${all.course.teacher.name}</td>
-                                    <td class="text-center">${all.course.time}</td>
-                                    <td class="text-center">${all.first}</td>
-                                    <td class="text-center">${all.second}</td>
-                                    <td class="text-center">${all.third}</td>
-                                    <td class="text-center">${all.wscore}</td>
+                                    <th class="text-center">课程</th>
+                                    <th class="text-center">学分</th>
+                                    <th class="text-center">任课教师</th>
+                                    <th class="text-center">开课学期</th>
+                                    <th class="text-center">第一次作业成绩</th>
+                                    <th class="text-center ">第二次作业成绩</th>
+                                    <th class="text-center">第三次作业成绩</th>
+                                    <th class="text-center">作业成绩总分</th>
+                                    <security:authorize access="hasRole('ROLE_TEACHER')">
+                                        <th class="text-center">操作</th>
+                                    </security:authorize>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                            <!--
-                        <tfoot>
-                        <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
-                        </tr>
-                        </tfoot>-->
-                        </table>
-                        <!--数据列表/-->
+                                </thead>
+                                <tbody>
 
 
+                                <c:forEach items="${workList}" var="all">
+
+                                    <tr>
+                                        >
+                                        <td class="text-center">${all.course.coname}</td>
+                                        <td class="text-center">${all.course.xf}</td>
+                                        <td class="text-center">${all.course.teacher.name}</td>
+                                        <td class="text-center">${all.course.time}</td>
+                                        <td class="text-center">${all.first}</td>
+                                        <td class="text-center">${all.second}</td>
+                                        <td class="text-center">${all.third}</td>
+                                        <td class="text-center">${all.wscore}</td>
+                                        <security:authorize access="hasRole('ROLE_TEACHER')">
+                                            <td class="text-center">
+                                                <a href="${pageContext.request.contextPath}/work/findById/?id=${all.id}"
+                                                   class="btn bg-olive btn-xs">录入成绩</a>
+                                            </td>
+                                        </security:authorize>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                                <!--
+                            <tfoot>
+                            <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                            </tr>
+                            </tfoot>-->
+                            </table>
+                            <!--数据列表/-->
+                        </security:authorize>
+
+                        <security:authorize access="hasRole('ROLE_TEACHER')">
+                            <table id="dataList"
+                                   class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">学号</th>
+                                    <th class="text-center">姓名</th>
+                                    <th class="text-center">班级</th>
+                                    <th class="text-center">专业</th>
+                                    <th class="text-center">院系</th>
+                                    <th class="text-center">第一次作业成绩</th>
+                                    <th class="text-center ">第二次作业成绩</th>
+                                    <th class="text-center">第三次作业成绩</th>
+                                    <th class="text-center">作业成绩总分</th>
+                                    <th class="text-center">操作</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                <c:forEach items="${workList}" var="all">
+
+                                    <tr>
+                                        <td class="text-center">${all.student.sNo}</td>
+                                        <td class="text-center">${all.student.sName}</td>
+                                        <td class="text-center">${all.student.classn.cname}</td>
+                                        <td class="text-center">${all.student.zy.zyname}</td>
+                                        <td class="text-center">${all.student.yx.yxname}</td>
+                                        <td class="text-center">${all.first}</td>
+                                        <td class="text-center">${all.second}</td>
+                                        <td class="text-center">${all.third}</td>
+                                        <td class="text-center">${all.wscore}</td>
+                                        <security:authorize access="hasRole('ROLE_TEACHER')">
+                                            <td class="text-center">
+                                                <a href="${pageContext.request.contextPath}/work/findById/?id=${all.id}"
+                                                   class="btn bg-olive btn-xs">录入成绩</a>
+                                            </td>
+                                        </security:authorize>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                                <!--
+                            <tfoot>
+                            <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                            </tr>
+                            </tfoot>-->
+                            </table>
+                            <!--数据列表/-->
+                        </security:authorize>
                     </div>
                     <!-- 数据表格 /-->
 
@@ -295,7 +368,7 @@
             <!-- /.box-footer-->
 
 
-
+</section>
     </div>
 
     </section>
@@ -427,8 +500,8 @@
 
     $(document).ready(function() {
 
-
-        $(function() {
+        <security:authorize access="hasRole('ROLE_STUDENT')">
+        $(function () {
             $("#v").DataTable();
             $('#dataList').DataTable({
                 "paging": false,
@@ -439,6 +512,37 @@
                 "autoWidth": false
             });
         });
+        </security:authorize>
+
+        <security:authorize access="hasRole('ROLE_TEACHER')">
+        $(function () {
+            $('#dataList').DataTable({
+                "pagingType": "full_numbers",
+
+                "language": {
+                    //"info": "当前第_PAGE_页，共 _PAGES_页",
+                    "sInfo": "当前显示第 _START_ 到第 _END_ 条，共 _TOTAL_ 条",
+                    "sInfoFiltered": "(从_MAX_条筛选 )",
+                    "sInfoEmpty": "共筛选到0条",
+                    "sSearch": "搜索:",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "未筛选到相关内容",
+                    "paginate": {
+                        "sFirst": "首页",  //首页和尾页必须在pagingType设为full_numbers时才可以
+                        "sLast": "尾页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "first": "First page",
+                        "last": "Last page",
+                        "next": "Next page",
+                        "previous": "Previous page"
+                    }
+
+                }
+
+            });
+        });
+        </security:authorize>
 
 
         // 激活导航位置

@@ -28,7 +28,6 @@ public class MessageServiceImpl implements IMessageService {
     IClassDao classDao;
     @Override
     public List<Student> findAll_stu(int page, int pageSize) {
-
         PageHelper.startPage(page, pageSize);
         return studentDao.findAll();
     }
@@ -46,7 +45,7 @@ public class MessageServiceImpl implements IMessageService {
      */
     @Override
     public void update(String id,String sNo,String sName,String sSex,String classid,String age,String phone) {
-       String zyid = classDao.findById(classid).getZyid();
+       String zyid = classDao.findById(classid).getCzyid();
         System.out.println(zyid);
         String yxid = zyDao.findById(zyid).getYxid();
         messageDao.update(id,sNo,sName,sSex,classid,zyid,yxid,age,phone);
@@ -57,13 +56,7 @@ public class MessageServiceImpl implements IMessageService {
         messageDao.update_stu(id,phone);
     }
 
-    @Override
-    public void save(String sNo, String sName, String sSex,String classid,String age,String phone) {
-        String zyid = classDao.findById(classid).getZyid();
-        System.out.println(zyid);
-        String yxid = zyDao.findById(zyid).getYxid();
-        messageDao.save(sNo,sName,sSex,classid,zyid,yxid,age,phone);
-    }
+
 
     @Override
     public void del(String id) {

@@ -7,7 +7,7 @@
 <!-- 页面meta -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>数据 - AdminLTE2定制版</title>
+<title>考勤成绩</title>
 <meta name="description" content="AdminLTE2定制版">
 <meta name="keywords" content="AdminLTE2定制版">
 
@@ -119,12 +119,12 @@
 						</div>
 						<div class="col-md-2 title">迟到次数</div>
 						<div class="col-md-4 data">
-							<input type="text" class="form-control" name="cd"
+							<input type="number" class="form-control" name="cd"
 								placeholder="" value="${cj.cd}">
 						</div>
 						<div class="col-md-2 title">旷课次数</div>
 						<div class="col-md-4 data">
-							<input type="text" class="form-control" name="kk"
+							<input type="number" class="form-control" name="kk"
 								placeholder="" value="${cj.kk}">
 						</div>
 										

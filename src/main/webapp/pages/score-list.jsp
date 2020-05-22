@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 
@@ -10,9 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 
-
-
-    <title>课程总成绩成绩查询</title>
+    <title>课程总成绩</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta
             content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
@@ -48,12 +47,6 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
-
-
-
-
 
 
     <!-- jQuery 2.2.3 -->
@@ -160,11 +153,15 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                课程总成绩成绩 <small>成绩列表</small>
+                课程总成绩 <small>成绩列表</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a href="${pageContext.request.contextPath}/score/findBySno?sno=t${scoreList.get(0).sno}">课程总成绩成绩</a></li>
+                <security:authorize access="hasRole('ROLE_STUDENT')">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/score/findBySno?sno=t${scoreList.get(0).sno}">课程总成绩</a>
+                    </li>
+                </security:authorize>
                 <li class="active">成绩列表</li>
             </ol>
         </section>
@@ -185,12 +182,21 @@
                     <div class="table-box">
 
                         <!--工具栏-->
-                        <div class="pull-left">
+                        <div class="">
                             <div class="form-group form-inline">
                                 <div class="btn-group">
-                                    <button type="button" id="sx" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/score/findBySno?sno=t${scoreList.get(0).sno}'">
-                                        <i class="fa fa-refresh"></i> 刷新
-                                    </button>
+                                    <security:authorize access="hasRole('ROLE_STUDENT')">
+                                        <button type="button" id="sx" class="btn btn-default" title="刷新"
+                                                onclick="location.href='${pageContext.request.contextPath}/score/findBySno?sno=t${scoreList.get(0).sno}'">
+                                            <i class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </security:authorize>
+                                    <security:authorize access="hasRole('ROLE_TEACHER')">
+                                        <button type="button" id="sx" class="btn btn-default" title="刷新"
+                                                onclick="location.href='${pageContext.request.contextPath}/score/findByCono?id=${scoreList.get(0).cono}'">
+                                            <i class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </security:authorize>
                                 </div>
                             </div>
                         </div>
@@ -201,61 +207,201 @@
                                     class="glyphicon glyphicon-search form-control-feedback"></span>
                             </div>
                         </div>--%>
-                        <div class="pull-right">
-                            <b>按学期查询:</b>
-                            <select class="form-control select2 " style="width: 220px" id="changeTime" onchange="changeTime()">
-                                <option style='display: none'></option>
-                                <c:forEach items="${timeList}" var="time">
-                                    <option value="${time}" >${time}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <!--工具栏/-->
+                        <security:authorize access="hasRole('ROLE_STUDENT')">
+                            <div class="">
+                                <b>按学期查询:</b>
+                                <select class="form-control select2 " style="width: 220px" id="changeTime"
+                                        onchange="changeTime()">
+                                    <option style='display: none'></option>
+                                    <c:forEach items="${timeList}" var="time">
+                                        <option value="${time}">${time}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
 
-                        <!--数据列表-->
-                        <table id="dataList"
-                               class="table table-bordered table-striped table-hover dataTable">
-                            <thead>
-                            <tr>
-                                <th class="text-center">课程</th>
-                                <th class="text-center">学分</th>
-                                <th class="text-center">任课教师</th>
-                                <th class="text-center">开课学期</th>
-                                <th class="text-center">考勤分数</th>
-                                <th class="text-center ">作业分数</th>
-                                <th class="text-center ">卷面分数</th>
-                                <th class="text-center">课程总成绩分数</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                            <!--工具栏/-->
 
-
-                            <c:forEach items="${scoreList}" var="all">
-
+                            <!--数据列表-->
+                            <table id="dataList"
+                                   class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
                                 <tr>
-                                    <td class="text-center">${all.course.coname}</td>
-                                    <td class="text-center">${all.course.xf}</td>
-                                    <td class="text-center">${all.course.teacher.name}</td>
-                                    <td class="text-center">${all.course.time}</td>
-                                    <td class="text-center">${all.kq}</td>
-                                    <td class="text-center">${all.work}</td>
-                                    <td class="text-center">${all.sj}</td>
-                                    <td class="text-center">${all.score}</td>
+                                    <th class="text-center">课程</th>
+                                    <th class="text-center">学分</th>
+                                    <th class="text-center">任课教师</th>
+                                    <th class="text-center">开课学期</th>
+                                    <th class="text-center">考勤分数</th>
+                                    <th class="text-center ">作业分数</th>
+                                    <th class="text-center ">卷面分数</th>
+                                    <th class="text-center">课程总成绩分数</th>
+
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                            <!--
-                        <tfoot>
-                        <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
-                        </tr>
-                        </tfoot>-->
-                        </table>
-                        <!--数据列表/-->
+                                </thead>
+                                <tbody>
+
+
+                                <c:forEach items="${scoreList}" var="all">
+                                    <tr>
+                                        <td class="text-center">${all.course.coname}</td>
+                                        <td class="text-center">${all.course.xf}</td>
+                                        <td class="text-center">${all.course.teacher.name}</td>
+                                        <td class="text-center">${all.course.time}</td>
+                                        <td class="text-center">${all.kq}</td>
+                                        <td class="text-center">${all.work}</td>
+                                        <td class="text-center">${all.sj}</td>
+                                        <td class="text-center">${all.score}</td>
+
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                                <!--
+                            <tfoot>
+                            <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                            </tr>
+                            </tfoot>-->
+                            </table>
+                            <!--数据列表/-->
+                        </security:authorize>
+
+                        <security:authorize access="hasRole('ROLE_TEACHER')">
+                            <!--工具栏/-->
+
+                            <!--数据列表-->
+                            <table id="dataList"
+                                   class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">学号</th>
+                                    <th class="text-center">姓名</th>
+                                    <th class="text-center">班级</th>
+                                    <th class="text-center">专业</th>
+                                    <th class="text-center">学院</th>
+                                    <th class="text-center">考勤分数</th>
+                                    <th class="text-center ">作业分数</th>
+                                    <th class="text-center ">卷面分数</th>
+                                    <th class="text-center">课程总成绩分数</th>
+                                    <c:if test="${scoreList.get(0).course.status==0}">
+                                        <th class="text-center">操作</th>
+                                    </c:if>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                <c:forEach items="${scoreList}" var="all">
+
+                                    <tr>
+                                        <td class="text-center">${all.sno}</td>
+                                        <td class="text-center">${all.student.sName}</td>
+                                        <td class="text-center">${all.student.classn.cname}</td>
+                                        <td class="text-center">${all.student.zy.zyname}</td>
+                                        <td class="text-center">${all.student.yx.yxname}</td>
+                                        <td class="text-center">${all.kq}</td>
+                                        <td class="text-center">${all.work}</td>
+                                        <c:if test="${all.sj!=0}">
+                                            <td class="text-center">${all.sj}</td>
+                                        </c:if>
+                                        <c:if test="${all.sj==0}">
+                                            <td class="text-center">未录入</td>
+                                        </c:if>
+                                        <c:if test="${all.score==0}">
+                                            <td class="text-center">未录入</td>
+                                        </c:if>
+                                        <c:if test="${all.score==-1}">
+                                            <td class="text-center">无考试资格</td>
+                                        </c:if>
+                                        <c:if test="${all.score!=0&&all.score!=-1}">
+                                            <td class="text-center">${all.score}</td>
+                                        </c:if>
+                                        <c:if test="${scoreList.get(0).course.status==0}">
+                                        <td class="text-center">
+                                            <c:if test="${all.score==-1}">
+                                                <a href="#" disabled
+                                                   class="btn bg-red btn-xs">不可录入</a>
+                                            </c:if>
+                                            <c:if test="${all.score!=-1}">
+                                                <a href="${pageContext.request.contextPath}/score/findById/?id=${all.id}"
+                                                   class="btn bg-olive btn-xs">录入成绩</a>
+                                            </c:if>
+                                        </td>
+                                        </c:if>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+
+                            </table>
+                            <!--数据列表/-->
+                        </security:authorize>
+
+                        <security:authorize access="hasAnyRole('ROLE_YXZR,ROLE_YZ,ROLE_ADMIN')">
+                            <!--工具栏/-->
+
+                            <!--数据列表-->
+                            <table id="dataList"
+                                   class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">学号</th>
+                                    <th class="text-center">姓名</th>
+                                    <th class="text-center">班级</th>
+                                    <th class="text-center">专业</th>
+                                    <th class="text-center">学院</th>
+                                    <th class="text-center">考勤分数</th>
+                                    <th class="text-center ">作业分数</th>
+                                    <th class="text-center ">卷面分数</th>
+                                    <th class="text-center">课程总成绩分数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                <c:forEach items="${scoreList}" var="all">
+
+                                    <tr>
+                                        <td class="text-center">${all.sno}</td>
+                                        <td class="text-center">${all.student.sName}</td>
+                                        <td class="text-center">${all.student.classn.cname}</td>
+                                        <td class="text-center">${all.student.zy.zyname}</td>
+                                        <td class="text-center">${all.student.yx.yxname}</td>
+                                        <td class="text-center">${all.kq}</td>
+                                        <td class="text-center">${all.work}</td>
+                                        <c:if test="${all.sj!=0}">
+                                            <td class="text-center">${all.sj}</td>
+                                        </c:if>
+                                        <c:if test="${all.sj==0}">
+                                            <td class="text-center">未录入</td>
+                                        </c:if>
+                                        <c:if test="${all.score==0}">
+                                            <td class="text-center">未录入</td>
+                                        </c:if>
+                                        <c:if test="${all.score==-1}">
+                                            <td class="text-center">无考试资格</td>
+                                        </c:if>
+                                        <c:if test="${all.score!=0&&all.score!=-1}">
+                                            <td class="text-center">${all.score}</td>
+                                        </c:if>
+
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                                <!--
+                            <tfoot>
+                            <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                            </tr>
+                            </tfoot>-->
+                            </table>
+                            <!--数据列表/-->
+                        </security:authorize>
 
 
                     </div>
@@ -263,46 +409,17 @@
 
 
                 </div>
-                <!-- /.box-body -->
-
-                <!-- .box-footer-->
-
-                <div class="box-tools pull-right">
-                    <%--                        <ul class="pagination">--%>
-                    <%--							--%>
-                    <%--                            <li>--%>
-                    <%--                                <a href="${pageContext.request.contextPath}/score/findBySno?sno=t${pageInfo.list.get(0).sno}&page=${pageInfo.firstPage}&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a>--%>
-                    <%--                            </li>--%>
-                    <%--                            <li><a href="${pageContext.request.contextPath}/score/findBySno?sno=t${pageInfo.list.get(0).sno}&page=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>--%>
-                    <%--							<c:forEach begin="1" end="${pageInfo.pages}" varStatus="status"  >--%>
-                    <%--								<c:if test="${pageInfo.pageNum==status.count}">--%>
-                    <%--									<li ><a style="background-color: #8ca4ff" href="${pageContext.request.contextPath}/score/findAll">${status.count}</a></li>--%>
-
-                    <%--								</c:if>--%>
-                    <%--								<c:if test="${pageInfo.pageNum!=status.count}">--%>
-                    <%--								<li class="lis"><a href="${pageContext.request.contextPath}/score/findBySno?sno=t${pageInfo.list.get(0).sno}&page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>--%>
-                    <%--								</c:if>--%>
-                    <%--							</c:forEach>--%>
-                    <%--                            <li><a href="${pageContext.request.contextPath}/score/findBySno?sno=t${pageInfo.list.get(0).sno}&page=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>--%>
-                    <%--                            <li>--%>
-                    <%--                                <a href="${pageContext.request.contextPath}/score/findBySno?sno=t${pageInfo.list.get(0).sno}&page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>--%>
-                    <%--                            </li>--%>
-                    <%--                        </ul>--%>
-                </div>
 
             </div>
             <!-- /.box-footer-->
 
 
+        </section>
+        <!-- 正文区域 /-->
 
-
-
-    </section>
-    <!-- 正文区域 /-->
-
-</div>
-<!-- @@close -->
-<!-- 内容区域 /-->
+    </div>
+    <!-- @@close -->
+    <!-- 内容区域 /-->
 
 
 </div>
@@ -398,10 +515,10 @@
 <script>
     function changeTime() {
         var time = $("#changeTime").val();
-        location.href="${pageContext.request.contextPath}/score/findByTime?sno=${scoreList.get(0).sno}&time="+time;
+        location.href = "${pageContext.request.contextPath}/score/findByTime?sno=${scoreList.get(0).sno}&time=" + time;
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         // 选择框
         $(".select2").select2();
 
@@ -411,7 +528,7 @@
 
         // WYSIHTML5编辑器
         $(".textarea").wysihtml5({
-            locale : 'zh-CN'
+            locale: 'zh-CN'
         });
     });
 
@@ -424,11 +541,11 @@
         }
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
-        $(function() {
-            $("#v").DataTable();
+        <security:authorize access="hasRole('ROLE_STUDENT')">
+        $(function () {
             $('#dataList').DataTable({
                 "paging": false,
                 "lengthChange": false,
@@ -438,6 +555,37 @@
                 "autoWidth": false
             });
         });
+        </security:authorize>
+
+        <security:authorize access="hasAnyRole('ROLE_TEACHER,ROLE_YZ,ROLE_YXZR,ROLE_ADMIN')">
+        $(function () {
+            $('#dataList').DataTable({
+                "pagingType": "full_numbers",
+
+                "language": {
+                    //"info": "当前第_PAGE_页，共 _PAGES_页",
+                    "sInfo": "当前显示第 _START_ 到第 _END_ 条，共 _TOTAL_ 条",
+                    "sInfoFiltered": "(从_MAX_条筛选 )",
+                    "sInfoEmpty": "共筛选到0条",
+                    "sSearch": "搜索:",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "未筛选到相关内容",
+                    "paginate": {
+                        "sFirst": "首页",  //首页和尾页必须在pagingType设为full_numbers时才可以
+                        "sLast": "尾页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "first": "First page",
+                        "last": "Last page",
+                        "next": "Next page",
+                        "previous": "Previous page"
+                    }
+
+                }
+
+            });
+        });
+        </security:authorize>
 
 
         // 激活导航位置
@@ -445,11 +593,11 @@
 
         // 列表按钮 
         $("#dataList td input[type='checkbox']").iCheck({
-            checkboxClass : 'icheckbox_square-blue',
-            increaseArea : '20%'
+            checkboxClass: 'icheckbox_square-blue',
+            increaseArea: '20%'
         });
         // 全选操作 
-        $("#selall").click(function() {
+        $("#selall").click(function () {
             var clicks = $(this).is(':checked');
             if (!clicks) {
                 $("#dataList td input[type='checkbox']").iCheck("uncheck");

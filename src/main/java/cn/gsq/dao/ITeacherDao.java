@@ -35,12 +35,15 @@ public interface ITeacherDao {
     })
     Teacher findById(String id);
 
-    @Insert("insert into teacher (name, age, sex, tyx) value (#{arg0},#{arg1},#{arg2},#{arg3})")
-    void save(String name, String age, String sex, String yxid);
+    @Insert("insert into teacher (name, age, sex, tyx,phone) value (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4})")
+    void save(String name, String age, String sex, String yxid,String phone);
 
-    @Update("update teacher set name=#{arg1},age=#{arg2},sex=#{arg3},tyx=#{arg4} where id=#{arg0}")
-    void update(String id, String name, String age, String sex, String yxid);
+    @Update("update teacher set name=#{arg1},age=#{arg2},sex=#{arg3},tyx=#{arg4},phone=#{arg5} where id=#{arg0}")
+    void update(String id, String name, String age, String sex, String yxid,String phone);
 
     @Delete("delete from teacher where id=#{id}")
     void del(String id);
+
+    @Update("update teacher set phone=#{arg1} where id=#{arg0}")
+    void update_teacher(String id,String phone);
 }

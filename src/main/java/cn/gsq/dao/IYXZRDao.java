@@ -2,6 +2,7 @@ package cn.gsq.dao;
 
 import cn.gsq.domain.YX;
 import cn.gsq.domain.YXMS;
+import cn.gsq.domain.YXZR;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
@@ -17,28 +18,29 @@ public interface IYXZRDao {
             @Result( property = "phone",column = "phone"),
             @Result(property = "age",column = "age"),
             @Result(property = "yxid",column = "yx_id"),
-            @Result(column = "yx_id", property = "yx", javaType = cn.gsq.domain.Class.class, one = @One(select =
+            @Result(column = "yx_id", property = "yx", javaType = cn.gsq.domain.YX.class, one = @One(select =
                     "cn.gsq.dao.IStudentDao.findById_yx"))
     })
-    List<YXMS> findAll();
+    List<YXZR> findAll();
 
     @Select("select * from yxzr where id=#{id}")
     @Results({
             @Result(id = true, property = "id",column = "id"),
             @Result( property = "name",column = "name"),
             @Result( property = "sex",column = "sex"),
+            @Result( property = "phone",column = "phone"),
             @Result(property = "age",column = "age"),
             @Result(property = "yxid",column = "yx_id"),
-            @Result(column = "yx", property = "yx", javaType = cn.gsq.domain.Class.class, one = @One(select =
+            @Result(column = "yx_id", property = "yx", javaType = cn.gsq.domain.YX.class, one = @One(select =
                     "cn.gsq.dao.IStudentDao.findById_yx"))
     })
-    YXMS findById(String id);
+    YXZR findById(String id);
 
-    @Insert("insert into yxzr (name, age, sex, yx_id) value (#{arg0},#{arg1},#{arg2},#{arg3})")
-    void save(String name, String age, String sex, String yxid);
+    @Insert("insert into yxzr (name, age, sex, yx_id,phone) value (#{name},#{age},#{sex},#{yxid},#{phone})")
+    void save(YXZR yxzr);
 
-    @Update("update yxzr set name=#{arg1},age=#{arg2},sex=#{arg3},yx_id=#{arg4} where id=#{arg0}")
-    void update(String id, String name, String age, String sex, String yxid);
+    @Update("update yxzr set name=#{name},age=#{age},sex=#{sex},yx_id=#{yxid},phone=#{phone} where id=#{id}")
+    void update(YXZR yxzr);
 
     @Delete("delete from yxzr where id=#{id}")
     void del(String id);

@@ -1,12 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <html>
 <head>
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>修改用户</title>
+    <title>修改信息</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta
@@ -77,65 +79,57 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                用户管理 <small>用户表单</small>
+                任课教师管理 <small>任课教师表单</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/student/findAll">学生信息管理</a></li>
-                <li class="active">用户表单</li>
+                        href="${pageContext.request.contextPath}/student/findAll">任课教师信息管理</a></li>
+                <li class="active">任课教师表单</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
-
-        <form action="${pageContext.request.contextPath}/teacher/update"
+        <%--管理员用户使用--%>
+        <security:authorize access="hasRole('ROLE_ADMIN')">
+        <form action="${pageContext.request.contextPath}/teacher/update_teacher"
               method="post">
             <!-- 正文区域 -->
             <section class="content"> <!--产品信息-->
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">教学秘书信息</div>
+                    <div class="panel-heading">任课教师信息</div>
                     <div class="row data-type">
-                        <input type="hidden" name="id" value="${yxms.id}">
+                        <input type="hidden" name="id" value="${teacher.id}">
                         <div class="col-md-2 title">姓名</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" name="name"
-                                   value="${yxms.name}">
+                                   value="${teacher.name}">
                         </div>
                         <div class="col-md-2 title">年龄</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" name="age"
-                                   value="${yxms.age}">
+                                   value="${teacher.age}">
                         </div>
-                        <div class="col-md-2 title">院系</div>
-                        <div class="col-md-4 data">
-                            <select class="form-control select2" style="width: 100%"
-                                    name="yxid">
-
-                                <c:forEach items="${yxList}" var="c">
-                                    <c:if test="${yxms.yx.id==c.id}">
-                                        <option value="${c.id}" selected>${c.yxname}</option>
-                                    </c:if>
-                                    <c:if test="${yxms.yx.id!=c.id}">
-                                        <option value="${c.id}" >${c.yxname}</option>
-                                    </c:if>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        <input style="display: none" value="1" name="yxid">
                         <div class="col-md-2 title">性别</div>
                         <div class="col-md-4 data">
                             <select class="form-control select2" style="width: 100%"
                                     name="sex">
-                                <c:if test="${yxms.sex=='男'}">
+                                <c:if test="${teacher.sex=='男'}">
                                     <option value="男" selected>男</option>
                                     <option value="女">女</option>
                                 </c:if>
-                                <c:if test="${yxms.sex=='女'}">
+                                <c:if test="${teacher.sex=='女'}">
                                     <option value="男" >男</option>
                                     <option value="女" selected>女</option>
                                 </c:if>
                             </select>
+                        </div>
+                        <div class="col-md-2 title">电话</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" name="phone"
+                            value="${teacher.phone}">
                         </div>
                     </div>
                 </div>
@@ -148,6 +142,61 @@
                 <!--工具栏/--> </section>
             <!-- 正文区域 /-->
         </form>
+        </security:authorize>
+        <%--管理员用户使用 /--%>
+        <%--教师用户使用--%>
+        <security:authorize access="hasRole('ROLE_TEACHER')">
+            <form action="${pageContext.request.contextPath}/teacher/update_teacher"
+                  method="get">
+                <!-- 正文区域 -->
+                <section class="content"> <!--产品信息-->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">任课教师信息</div>
+                        <div class="row data-type">
+                            <input type="hidden" name="id" value="${teacher.id}">
+                            <div class="col-md-2 title">姓名</div>
+                            <div class="col-md-4 data">
+                                <input disabled type="text" class="form-control"
+                                       value="${teacher.name}">
+                            </div>
+                            <div class="col-md-2 title">年龄</div>
+                            <div class="col-md-4 data">
+                                <input disabled type="text" class="form-control"
+                                       value="${teacher.age}">
+                            </div>
+                            <div class="col-md-2 title">性别</div>
+                            <div class="col-md-4 data">
+                                <select disabled class="form-control select2" style="width: 100%"
+                                       >
+                                    <c:if test="${teacher.sex=='男'}">
+                                        <option value="男" selected>男</option>
+                                        <option value="女">女</option>
+                                    </c:if>
+                                    <c:if test="${teacher.sex=='女'}">
+                                        <option value="男" >男</option>
+                                        <option value="女" selected>女</option>
+                                    </c:if>
+                                </select>
+                            </div>
+                            <div class="col-md-2 title">电话</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" name="phone"
+                                       value="${teacher.phone}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--订单信息/--> <!--工具栏-->
+                    <div class="box-tools text-center">
+                        <button type="submit" class="btn bg-maroon">保存</button>
+                        <button type="button" class="btn bg-default"
+                                onclick="history.back(-1);">返回</button>
+                    </div>
+                    <!--工具栏/--> </section>
+                <!-- 正文区域 /-->
+            </form>
+        </security:authorize>
+        <%--教师用户使用 /--%>
     </div>
     <!-- 内容区域 /-->
 

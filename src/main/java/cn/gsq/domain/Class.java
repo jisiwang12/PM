@@ -8,14 +8,14 @@ public class Class {
     //年级
     private String grade;
 
-    private String zyid;
+    private String czyid;
 
-    public String getZyid() {
-        return zyid;
+    public String getCzyid() {
+        return czyid;
     }
 
-    public void setZyid(String zyid) {
-        this.zyid = zyid;
+    public void setCzyid(String czyid) {
+        this.czyid = czyid;
     }
 
     public String getCid() {

@@ -1,10 +1,9 @@
 package cn.gsq.service.impl;
 
-import cn.gsq.dao.IYXMSDao;
 import cn.gsq.dao.IYXZRDao;
 import cn.gsq.domain.YXMS;
+import cn.gsq.domain.YXZR;
 import cn.gsq.service.IYXZRService;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,30 +12,33 @@ import java.util.List;
 @Service
 public class YXZRServiceImpl implements IYXZRService {
     @Autowired
-    IYXZRDao iyxmsDao;
+    IYXZRDao yxzrDao;
     @Override
     public List<YXMS> findAll(int page,int pageSize) {
-        PageHelper.startPage(page, pageSize);
-        return iyxmsDao.findAll();
+        return null;
+    }
+
+    public List<YXZR> findAll() {
+        return yxzrDao.findAll();
     }
 
     @Override
-    public YXMS findById(String id) {
-        return iyxmsDao.findById(id);
+    public YXZR findById(String id) {
+        return yxzrDao.findById(id);
     }
 
     @Override
-    public void save(String name, String age, String sex, String yxid) {
-        iyxmsDao.save(name, age, sex, yxid);
+    public void save(YXZR yxzr) {
+        yxzrDao.save(yxzr);
     }
 
     @Override
-    public void update(String id, String name, String age, String sex, String yxid) {
-        iyxmsDao.update(id, name, age, sex, yxid);
+    public void update(YXZR yxzr) {
+        yxzrDao.update(yxzr);
     }
 
     @Override
     public void del(String id) {
-        iyxmsDao.del(id);
+        yxzrDao.del(id);
     }
 }

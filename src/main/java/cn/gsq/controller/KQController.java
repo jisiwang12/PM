@@ -38,6 +38,7 @@ public class KQController {
     CourseServiceImpl courseService;
     @Autowired
     HttpServletRequest request;
+
     /**
      * 查询所有信息
      *
@@ -144,9 +145,38 @@ public class KQController {
                        @RequestParam(name = "cd") String cd,
                        @RequestParam(name = "kk") String kk)
     {
+        KQ byId = kqService.findById(id);
+        String cono = byId.getCono();
         kqService.update(id,cd,kk);
-        return "redirect:findAll";
+        return "redirect:findByCono?id="+cono;
     }
 
+    /**
+     * 教师用户使用
+     * @param name
+     * @return
+     */
+    @RequestMapping("/findByName")
+    public ModelAndView findByName(String name) {
+        ModelAndView mv = new ModelAndView();
+        String tid = name.substring(1, name.length());
+        List<Course> courseList = courseService.findByTid(tid);
+        mv.addObject("courseList", courseList);
+        mv.setViewName("teacher-kq");
+        return mv;
+    }
+
+    @RequestMapping("/findByCono")
+    public ModelAndView findByCono(String id) {
+        ModelAndView mv = new ModelAndView();
+        List<KQ> kqList=kqService.findByCono(id);
+        for (KQ kq : kqList) {
+            System.out.println(kq.getSno());
+            System.out.println(kq.getKqscore());
+        }
+        mv.addObject("kqList", kqList);
+        mv.setViewName("kq-list");
+        return mv;
+    }
 
 }

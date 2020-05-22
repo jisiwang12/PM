@@ -74,10 +74,10 @@ public class YXMSController {
     public String update(@RequestParam(name = "id", required = true) String id,
                          @RequestParam(name = "name", required = true) String name,
                          @RequestParam(name = "age", required = true) String age,
-                         @RequestParam(name = "sex", required = true) String sex,
-                         @RequestParam(name = "yxid", required = true) String yxid) {
-        yxmsService.update(id, name, age, sex, yxid);
-        return "redirect:findAll";
+                         @RequestParam(name = "sex", required = true) String sex
+                       ) {
+        yxmsService.update(id, name, age, sex);
+        return "redirect:findByName?name=admin";
     }
 
     @RequestMapping("/del")
@@ -88,5 +88,20 @@ public class YXMSController {
             }
         }
         return "redirect:findAll";
+    }
+
+    @RequestMapping("/findByName")
+    public ModelAndView findByName(String name) {
+        ModelAndView mv = new ModelAndView();
+        List<YXMS> all = yxmsService.findAll(1, 2);
+        if ("admin".equals(name)) {
+            YXMS byId = yxmsService.findById(all.get(0).getId());
+            mv.addObject("yxms", byId);
+        } else {
+            YXMS byId = yxmsService.findById(name.substring(1, name.length()));
+            mv.addObject("yxms", byId);
+        }
+        mv.setViewName("yxms-list");
+        return mv;
     }
 }

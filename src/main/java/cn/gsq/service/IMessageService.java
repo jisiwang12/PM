@@ -14,7 +14,7 @@ public interface IMessageService {
 
     public void update_stu(String id,String phone);
 
-    public void save(String sNo, String sName, String sSex,String classid,String age,String phone);
+
 
     void del(String id);
 }

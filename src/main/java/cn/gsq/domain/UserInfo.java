@@ -11,8 +11,17 @@ public class UserInfo {
     private String uName;
     private String uPass;
     private List<Role> roles;
-    public int status;
-    public String statusStr;
+    private String rid;
+    private int status;
+    private String statusStr;
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
 
     public String getStatusStr() {
         if (this.getStatus() == 0) {

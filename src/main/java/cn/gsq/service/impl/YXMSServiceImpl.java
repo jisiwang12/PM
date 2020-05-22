@@ -32,7 +32,12 @@ public class YXMSServiceImpl implements IYXMSService {
 
     @Override
     public void update(String id, String name, String age, String sex, String yxid) {
-        iyxmsDao.update(id, name, age, sex, yxid);
+
+    }
+
+
+    public void update(String id, String name, String age, String sex) {
+        iyxmsDao.update(id, name, age, sex);
     }
 
     @Override

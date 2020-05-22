@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IUserService extends UserDetailsService {
 
-    List<UserInfo> findAll(int page,int pageSize);
+    List<UserInfo> findAll();
 
     void save(UserInfo userInfo);
 

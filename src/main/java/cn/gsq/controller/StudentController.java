@@ -3,8 +3,10 @@ package cn.gsq.controller;
 import cn.gsq.domain.Class;
 import cn.gsq.domain.Student;
 import cn.gsq.domain.UserInfo;
+import cn.gsq.service.IStudentService;
 import cn.gsq.service.impl.ClassServiceImpl;
 import cn.gsq.service.impl.MessageServiceImpl;
+import cn.gsq.service.impl.StudentServiceImpl;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,22 +31,22 @@ public class StudentController {
     @Autowired
     ClassServiceImpl classService;
 
+    @Autowired
+    IStudentService studentService;
+
+
 
     /**
      * 查询所有
-     * @param page
-     * @param pageSize
      * @return
      */
     @RequestMapping("/findAll")
-    public ModelAndView findAll_Stu(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                    @RequestParam(name = "pageSize", required = true, defaultValue = "2") int pageSize) {
-        List<Student> all_stu = messageService.findAll_stu(page,pageSize);
+    public ModelAndView findAll_Stu() {
+        List<Student> all_stu = studentService.findAll();
         System.out.println(all_stu);
-        PageInfo pageInfo = new PageInfo(all_stu);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("student-list");
-        mv.addObject("pageInfo", pageInfo);
+        mv.addObject("studentList", all_stu);
         return mv;
     }
 
@@ -100,7 +102,7 @@ public class StudentController {
     @RequestParam(name = "phone", required = true) String phone,
     @RequestParam(name = "classid", required = true) String classid){
         System.out.println(sName);
-        messageService.update(id,sNo,sName,sSex,classid,age,phone);
+        studentService.update(id,sNo,sName,sSex,classid,age,phone);
         return "redirect:findAll";
     }
 
@@ -122,14 +124,13 @@ public class StudentController {
 
     /**
      * 新建
-     * @param sNo
      * @param sName
      * @param sSex
      * @param classid
      * @return
      */
     @RequestMapping("/save")
-    public String save(@RequestParam(name = "sNo", required = true) String sNo,
+    public String save(
                        @RequestParam(name = "sName", required = true) String sName,
                        @RequestParam(name = "sSex", required = true) String sSex,
                        @RequestParam(name = "age", required = true) String age,
@@ -137,7 +138,7 @@ public class StudentController {
                        @RequestParam(name = "classid", required = true) String classid) {
 
 
-        messageService.save(sNo,sName,sSex,classid,age,phone);
+        studentService.save(sName,sSex,classid,age,phone);
         return "redirect:findAll";
 
     }
@@ -161,10 +162,10 @@ public class StudentController {
      * @return
      */
     @RequestMapping("/del")
-    public String del(String[] ids) {
+    public String del(String[] ids) throws Exception {
         if (ids != null && ids.length != 0) {
             for (String id:ids) {
-                messageService.del(id);
+                studentService.del(id);
             }
         }
         return "redirect:findAll";

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -80,34 +80,29 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                用户管理 <small>用户表单</small>
+                学生管理 <small>学生表单</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/user/findAll.do">学生信息管理</a></li>
-                <li class="active">用户表单</li>
+                        href="${pageContext.request.contextPath}/user/findAll">学生信息管理</a></li>
+                <li class="active">学生表单</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
 
         <form action="${pageContext.request.contextPath}/student/save"
-              method="get">
+              method="get" id="form">
             <!-- 正文区域 -->
             <section class="content"> <!--产品信息-->
 
                 <div class="panel panel-default">
                     <div class="panel-heading">学生信息</div>
                     <div class="row data-type">
-                        <div class="col-md-2 title">学号</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="sNo"
-                                   value="">
-                        </div>
                         <div class="col-md-2 title">姓名</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="sName"
+                            <input id="name" type="text" class="form-control" name="sName"
                                    value="">
                         </div>
                         <div class="col-md-2 title">班级</div>
@@ -115,7 +110,7 @@
                             <select class="form-control select2" style="width: 100%"
                                     name="classid">
                                 <c:forEach items="${classList}" var="c">
-                                    <option value="${c.cid}" >${c.cname}</option>
+                                    <option value="${c.cid}">${c.cname}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -123,27 +118,29 @@
                         <div class="col-md-4 data">
                             <select class="form-control select2" style="width: 100%"
                                     name="sSex">
+                                <option selected value="" disabled></option>
                                 <option value="男" selected>男</option>
                                 <option value="女">女</option>
                             </select>
                         </div>
                         <div class="col-md-2 title">年龄</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="age"
+                            <input id="age" type="number" class="form-control" name="age"
                                    value="">
                         </div>
                         <div class="col-md-2 title">电话</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="phone"
+                            <input id="phone" type="text" class="form-control" name="phone"
                                    value="">
                         </div>
                     </div>
                 </div>
                 <!--订单信息/--> <!--工具栏-->
                 <div class="box-tools text-center">
-                    <button type="submit" class="btn bg-maroon">保存</button>
+                    <button type="button" id="sub" class="btn bg-maroon">保存</button>
                     <button type="button" class="btn bg-default"
-                            onclick="history.back(-1);">返回</button>
+                            onclick="history.back(-1);">返回
+                    </button>
                 </div>
                 <!--工具栏/--> </section>
             <!-- 正文区域 /-->
@@ -158,7 +155,8 @@
         </div>
         <strong>Copyright &copy; 2014-2017 <a
                 href="http://www.itcast.cn">研究院研发部</a>.
-        </strong> All rights reserved. </footer>
+        </strong> All rights reserved.
+    </footer>
     <!-- 底部导航 /-->
 
 </div>
@@ -251,13 +249,25 @@
         src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        //判断信息是否填写完整
+        $("#sub").click(function () {
+            let name = $("#name").val();
+            let age = $("#age").val();
+            let phone = $("#phone").val();
+            if (name != "" && age != "" && phone != "") {
+                $("#form").submit();
+            } else {
+                alert("信息请填写完整！！！")
+            }
+        })
+
         // 选择框
         $(".select2").select2();
 
         // WYSIHTML5编辑器
         $(".textarea").wysihtml5({
-            locale : 'zh-CN'
+            locale: 'zh-CN'
         });
     });
 

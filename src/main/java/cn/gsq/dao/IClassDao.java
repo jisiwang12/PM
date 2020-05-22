@@ -14,7 +14,7 @@ public interface IClassDao {
             @Result(property = "cid", column = "cid", id = true),
             @Result(property = "cname", column = "cname"),
             @Result(property = "grade", column = "grade"),
-            @Result(property = "zyid", column = "czyid")
+            @Result(property = "czyid", column = "czyid")
     })
     public List<Class> findAll();
 
@@ -23,8 +23,10 @@ public interface IClassDao {
             @Result(property = "cid", column = "cid", id = true),
             @Result(property = "cname", column = "cname"),
             @Result(property = "grade", column = "grade"),
-            @Result(property = "zyid", column = "czyid")
+            @Result(property = "czyid", column = "czyid")
     })
     public Class findById(String id);
+
+
 
 }

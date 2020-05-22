@@ -1,7 +1,7 @@
 package cn.gsq.service;
 
-import cn.gsq.domain.YX;
 import cn.gsq.domain.YXMS;
+import cn.gsq.domain.YXZR;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ public interface IYXZRService {
 
     List<YXMS> findAll(int page, int pageSize);
 
-    YXMS findById(String id);
+    YXZR findById(String id);
 
-    void save(String name, String age, String sex, String yxid);
+    void save(YXZR yxzr);
 
-    public void update(String id, String name, String age, String sex, String yxid);
+    public void update(YXZR yxzr);
 
     void del(String id);
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,9 +9,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>学生信息管理</title>
-    <meta name="description" content="AdminLTE2定制版">
-    <meta name="keywords" content="AdminLTE2定制版">
+    <title>成绩分析</title>
+
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta
@@ -77,211 +77,148 @@
     <div class="content-wrapper">
 
         <!-- 内容头部 -->
-        <section class="content-header">
-            <h1>
-                成绩分析 <small>全部成绩</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="${pageContext.request.contextPath}/pages/main.jsp"><i
-                        class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a
-                        href="${pageContext.request.contextPath}/student/findAll">成绩分析</a></li>
-
-                <li class="active">全部成绩</li>
-            </ol>
-        </section>
         <!-- 内容头部 /-->
+        <section class="content-header">
+            <!-- 正文区域 -->
+            <section class="content"> <!-- .box-body -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">考勤课程列表</h3>
+                    </div>
 
-        <!-- 正文区域 -->
-        <section class="content"> <!-- .box-body -->
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">列表</h3>
-                </div>
+                    <div class="box-body">
 
-                <div class="box-body">
+                        <!-- 数据表格 -->
+                        <div class="table-box">
 
-                    <!-- 数据表格 -->
-                    <div class="table-box">
+                            <!--数据列表-->
 
-                        <!--工具栏-->
-                        <div class="pull-left">
-                            <div class="form-group form-inline">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/student/page'">
-                                        <i class="fa fa-file-o"></i> 新建
-                                    </button><button type="button" id="delete" class="btn btn-default" title="删除">
-                                    <i class="fa fa-file-o"></i> 删除
-                                </button>
+                            <form action="${pageContext.request.contextPath}/course/del" id="form">
+                                <table id="dataList"
+                                       class="table table-bordered table-striped table-hover dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">课程</th>
+                                        <th class="text-center">学分</th>
+                                        <th class="text-center">任课教师</th>
+                                        <th class="text-center">开课学期</th>
+                                        <th class="text-center">操作</th>
+                                    </tr>
+                                    </thead>
 
-                                    <button type="button" class="btn btn-default" title="刷新" onclick="location.href='${pageContext.request.contextPath}/student/findAll'">
-                                        <i class="fa fa-refresh"></i> 刷新
+                                    <tbody>
+                                    <c:forEach items="${courseList}" var="course">
+                                        <tr>
+                                            <td class="text-center">${course.coname}</td>
+                                            <td class="text-center">${course.xf }</td>
+                                            <td class="text-center">${course.teacher.name}</td>
+                                            <td class="text-center">${course.time}</td>
+                                            <td class="text-center">
+                                                <a href="${pageContext.request.contextPath}/cj/findByCono?id=${course.cono}" class="btn bg-olive btn-xs">查看详情</a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                                <!--数据列表/-->
+
+                        </div>
+                        <!-- 数据表格 /-->
+
+                    </div>
+
+                    <!-- 模态框（Modal） -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        删除课程
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    确定要删除吗？
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                    </button>
+                                    <button type="button" id="delete" class="btn btn-primary">
+                                        确定
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                        </div>
-                        <!--工具栏/-->
-
-                        <!--数据列表-->
-                        <form action="${pageContext.request.contextPath}/student/del" id="form">
-                            <table id="dataList"
-                                   class="table table-bordered table-striped table-hover dataTable">
-                                <thead>
-                                <tr>
-                                    <th class="" style="padding-right: 0px"><input
-                                            id="selall" type="checkbox" class="icheckbox_square-blue">
-                                    </th>
-                                    <th class="sorting_asc">ID</th>
-                                    <th class="sorting_desc">课程</th>
-                                    <th class="sorting">班级</th>
-                                    <th class="text-center">优秀率</th>
-                                    <th class="text-center">优良率</th>
-                                    <th class="text-center">及格率</th>
-                                    <th class="text-center">不及格率</th>
-                                    <th class="text-center">平均分</th>
-                                    <th class="text-center">最高分</th>
-                                    <th class="text-center">最低分</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-
-                                    <tr>
-                                        <td><input name="ids" type="checkbox" value="${cj.id}"></td>
-                                        <td>1</td>
-                                        <td>数据结构与算法</td>
-                                        <td>2016级物联网1班</td>
-                                        <td>10%</td>
-                                        <td>30%</td>
-                                        <td>70%</td>
-                                        <td>30%</td>
-                                        <td>72</td>
-                                        <td>95</td>
-                                        <td>47</td>
-                                        <td class="text-center">
-                                            <a href="${pageContext.request.contextPath}/cj/findById/?id=${cj.id}" class="btn bg-olive btn-xs">修改</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody>
-
-
-                                    <tr>
-                                        <td><input name="ids" type="checkbox" value="${cj.id}"></td>
-                                        <td>2</td>
-                                        <td>数据结构与算法</td>
-                                        <td>2016级物联网2班</td>
-                                        <td>15%</td>
-                                        <td>32%</td>
-                                        <td>72%</td>
-                                        <td>28%</td>
-                                        <td>76</td>
-                                        <td>96</td>
-                                        <td>52</td>
-                                        <td class="text-center">
-                                            <a href="${pageContext.request.contextPath}/cj/findById/?id=${cj.id}" class="btn bg-olive btn-xs">修改</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-
-                                <!--
-                            <tfoot>
-                            <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
-                            </tr>
-                            </tfoot>-->
-                            </table>
-                        </form>
-                        <!--数据列表/-->
-
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
                     </div>
-                    <!-- 数据表格 /-->
+                    <!-- 模态框（Modal） /-->
+                    <!-- /.box-body -->
 
-                </div>
-                <!-- /.box-body -->
+                    <!-- .box-footer-->
+                    <!-- .box-footer-->
+                    <%-- <security:authorize access="hasRole('ROLE_ADMIN')">
+                     <div class="box-footer">
+                         <div class="pull-left">
+                             <div class="form-group form-inline">
+                                 总共${pageInfo.pages}页，共${pageInfo.total} 条数据。 每页
+                                 <select class="form-control" id="changePageSize" onchange="changePageSize()">
+                                     <c:forEach begin="1" end="5" varStatus="status">
+                                         <c:if test="${status.count==pageInfo.pageSize}">
+                                             <option selected>${status.count}</option>
 
-                <!-- .box-footer-->
-                <!-- .box-footer-->
-                <div class="box-footer">
-                    <div class="pull-left">
-                        <div class="form-group form-inline">
-                            总共${pageInfo.pages}页，共${pageInfo.total}2 条数据。 每页
-                            <select class="form-control" id="changePageSize" onchange="changePageSize()">
-                                <c:forEach begin="1" end="5" varStatus="status">
-                                    <c:if test="${status.count==pageInfo.pageSize}">
-                                        <option selected>${status.count}</option>
+                                         </c:if>
+                                         <c:if test="${status.count!=pageInfo.pageSize}">
+                                             <option>${status.count}</option>
+                                         </c:if>
 
-                                    </c:if>
-                                    <c:if test="${status.count!=pageInfo.pageSize}">
-                                        <option>${status.count}</option>
-                                    </c:if>
+                                     </c:forEach>
+                                 </select> 条
+                             </div>
+                         </div>
 
-                                </c:forEach>
-                                <option selected>2</option>
-                            </select> 条
-                        </div>
-                    </div>
+                         <div class="box-tools pull-right">
+                             <ul class="pagination">
 
-                    <div class="box-tools pull-right">
-                        <ul class="pagination">
+                                 <li>
+                                     <a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.firstPage}&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a>
+                                 </li>
+                                 <li><a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>
+                                 <c:forEach begin="1" end="${pageInfo.pages}" varStatus="status"  >
+                                     <c:if test="${pageInfo.pageNum==status.count}">
+                                         <li ><a style="background-color: #8ca4ff" href="${pageContext.request.contextPath}/student/findAll">${status.count}</a></li>
 
-                            <li>
-                                <a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.firstPage}&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a>
-                            </li>
-                            <li><a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>
-                            <c:forEach begin="1" end="${pageInfo.pages}" varStatus="status"  >
-                                <c:if test="${pageInfo.pageNum==status.count}">
-                                    <li ><a style="background-color: #8ca4ff" href="${pageContext.request.contextPath}/student/findAll">${status.count}</a></li>
+                                     </c:if>
+                                     <c:if test="${pageInfo.pageNum!=status.count}">
+                                         <li class="lis"><a href="${pageContext.request.contextPath}/student/findAll?page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>
+                                     </c:if>
+                                 </c:forEach>
+                                 <li><a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>
+                                 <li>
+                                     <a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>
+                                 </li>
+                             </ul>
+                         </div>
 
-                                </c:if>
-                                <c:if test="${pageInfo.pageNum!=status.count}">
-                                    <li class="lis"><a href="${pageContext.request.contextPath}/student/findAll?page=${status.count}&pageSize=${pageInfo.pageSize}">${status.count}</a></li>
-                                </c:if>
-                            </c:forEach>
-                            <li><a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/student/findAll?page=${pageInfo.lastPage}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a>
-                            </li>
-                        </ul>
-                    </div>
+                     </div>
+
+                     </security:authorize>
+                     <!-- /.box-footer-->
+     --%>
+
 
                 </div>
                 <!-- /.box-footer-->
 
 
 
-            </div>
-            <!-- /.box-footer-->
-
-
-
-        </section>
-        <!-- 正文区域 /-->
+            </section>
+            <!-- 正文区域 /-->
 
     </div>
     <!-- @@close -->
     <!-- 内容区域 /-->
 
-    <!-- 底部导航 -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.8
-        </div>
-        <strong>Copyright &copy; 2014-2017 <a
-                href="http://www.itcast.cn">研究院研发部</a>.
-        </strong> All rights reserved. </footer>
-    <!-- 底部导航 /-->
 
 </div>
 
@@ -334,16 +271,9 @@
 <script src="../plugins/ionslider/ion.rangeSlider.min.js"></script>
 <script src="../plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <script>
-    function changePageSize() {
-        //获取下拉框的值
-        var pageSize = $("#changePageSize").val();
 
-        //向服务器发送请求，改变没页显示条数
-        location.href = "${pageContext.request.contextPath}/student/findAll?page=1&pageSize="
-            + pageSize;
-
-    }
     $(document).ready(function() {
+
         // 选择框
         $(".select2").select2();
         deleteById();
@@ -351,13 +281,42 @@
         $(".textarea").wysihtml5({
             locale : 'zh-CN'
         });
+
+        $(function() {
+            $('#dataList').DataTable({
+                "pagingType": "full_numbers",
+
+                "language": {
+                    //"info": "当前第_PAGE_页，共 _PAGES_页",
+                    "sInfo": "当前显示第 _START_ 到第 _END_ 条，共 _TOTAL_ 条",
+                    "sInfoFiltered": "(从_MAX_条筛选 )",
+                    "sInfoEmpty": "共筛选到0条",
+                    "sSearch": "搜索:",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "未筛选到相关内容",
+                    "paginate": {
+                        "sFirst": "首页",  //首页和尾页必须在pagingType设为full_numbers时才可以
+                        "sLast": "尾页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "first": "First page",
+                        "last": "Last page",
+                        "next": "Next page",
+                        "previous": "Previous page"
+                    }
+
+                }
+
+            });
+        });
+
     });
 
     //删除操作
     function deleteById() {
         $("#delete").click(function () {
             $("#form").submit();
-            console.log("12")
+
         });
     };
     // 设置激活菜单

@@ -239,7 +239,7 @@
                                     </h4>
                                 </div>
                                 <div class="modal-body">
-                                   确定要修改密码吗？
+                                    确定要修改密码吗？
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消

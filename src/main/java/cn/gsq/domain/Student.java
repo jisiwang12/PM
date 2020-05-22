@@ -18,11 +18,19 @@ public class Student {
 
     private Class classn;
 
-    private String classid;
+    private String scid;
     private String zyid;
     private String yxid;
     private String age;
     private String phone;
+
+    public String getScid() {
+        return scid;
+    }
+
+    public void setScid(String scid) {
+        this.scid = scid;
+    }
 
     public String getAge() {
         return age;
@@ -40,13 +48,6 @@ public class Student {
         this.phone = phone;
     }
 
-    public String getClassid() {
-        return classid;
-    }
-
-    public void setClassid(String classid) {
-        this.classid = classid;
-    }
 
     public String getZyid() {
         return zyid;
@@ -128,20 +129,5 @@ public class Student {
         this.yx = yx;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", sNo='" + sNo + '\'' +
-                ", sName='" + sName + '\'' +
-                ", sClass='" + sClass + '\'' +
-                ", sSex='" + sSex + '\'' +
-                ", zy=" + zy +
-                ", yx=" + yx +
-                ", classn=" + classn +
-                ", classid='" + classid + '\'' +
-                ", zyid='" + zyid + '\'' +
-                ", yxid='" + yxid + '\'' +
-                '}';
-    }
+
 }
